@@ -4,27 +4,31 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dress-Up Studio</title>
-  <link rel="stylesheet" href="style-4.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
   
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Gamja Flower', cursive, sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
       height: 100vh;
+      width: 100vw;
       overflow: hidden;
-      /* Main background requested */
+      /* Main background */
       background-image: url('https://nicegirlslumber.neocities.org/dressupintime.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      user-select: none;
     }
 
-    /* Layout Wrapper */
     .game-container {
       display: flex;
       width: 100%;
@@ -32,28 +36,98 @@
       position: relative;
     }
 
-    /* Left Panel: Color Customization Controls */
-    .controls-panel {
-      width: 280px;
+    /* LEFT PANEL: Sliding Curtain Customization Box */
+    .customization-curtain-container {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .customization-box {
+      width: 290px;
+      height: 92%;
+      margin-left: 20px;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(5px);
-      box-shadow: 2px 0 10px rgba(0,0,0,0.15);
+      background: rgba(255, 245, 247, 0.92);
+      backdrop-filter: blur(8px);
+      box-shadow: 10px 0 25px rgba(0,0,0,0.25);
+      border-radius: 20px;
+      border: 3px solid #f48fb1;
       display: flex;
       flex-direction: column;
       gap: 15px;
-      z-index: 2;
-      margin: 20px;
-      border-radius: 16px;
+      pointer-events: auto;
+      transform: translateX(-330px); /* Hidden off-screen */
+      transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+      position: relative;
+    }
+
+    .customization-box.open {
+      transform: translateX(0); /* Pulled into view */
+    }
+
+    /* Customization Toggle Curtain Pull String/Tab */
+    .custom-pull-tab {
+      position: absolute;
+      right: -55px;
+      top: 30%;
+      width: 55px;
+      height: 110px;
+      background: #f06292;
+      border-radius: 0 16px 16px 0;
+      box-shadow: 5px 3px 12px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      color: white;
+      font-size: 1.1rem;
+      text-align: center;
+      padding: 5px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .custom-pull-tab:hover {
+      background: #ec407a;
+      transform: scale(1.05);
+    }
+
+    .custom-pull-tab img {
+      width: 35px;
+      height: 35px;
+      object-fit: contain;
+      margin-top: 4px;
     }
 
     .control-group {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 6px;
     }
 
-    /* Main Stage */
+    .control-group label {
+      font-size: 1.3rem;
+      color: #880e4f;
+      font-weight: bold;
+    }
+
+    .control-group input[type="color"] {
+      border: 2px solid #f48fb1;
+      border-radius: 8px;
+      height: 38px;
+      width: 100%;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    /* MAIN STAGE (Avatar Display) */
     .avatar-stage {
       flex: 1;
       position: relative;
@@ -64,11 +138,10 @@
 
     .avatar-container {
       position: relative;
-      width: 350px;
-      height: 550px;
+      width: 360px;
+      height: 580px;
     }
 
-    /* Canvas Elements Layering (PNG Overlays) */
     .avatar-layer {
       position: absolute;
       top: 0;
@@ -78,16 +151,16 @@
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
+      pointer-events: none;
     }
 
-    /* --- PNG Layer Asset Paths --- */
-    /* Insert PNG image URLs inside the url() fields below */
+    /* Placeholder Layer Image Paths */
     #bodyBase { background-image: url('YOUR_BASE_BODY.png'); }
     #eyesLayer { background-image: url('YOUR_EYES.png'); }
     #hairBack { background-image: url('YOUR_HAIR_BACK_DEFAULT.png'); }
     #hairFront { background-image: url('YOUR_HAIR_FRONT_DEFAULT.png'); }
 
-    /* Right Action Bar (PNG Controls & Curtain Pull) */
+    /* RIGHT SIDE ACTION PANEL */
     .nav-buttons {
       position: absolute;
       right: 30px;
@@ -100,99 +173,208 @@
       z-index: 5;
     }
 
-    /* PNG Arrow Buttons */
-    .png-arrow-btn {
-      width: 60px;
-      height: 60px;
+    .png-btn {
       background: none;
       border: none;
       cursor: pointer;
       padding: 0;
       transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #880e4f;
+      font-size: 1.1rem;
+      font-weight: bold;
     }
 
-    .png-arrow-btn img {
-      width: 100%;
-      height: 100%;
+    .png-btn img {
+      width: 60px;
+      height: 60px;
       object-fit: contain;
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.25));
     }
 
-    .png-arrow-btn:hover {
+    .png-btn:hover {
       transform: scale(1.15);
     }
 
-    /* Curtain Pull Handle */
-    .curtain-pull {
-      width: 45px;
-      height: 90px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
+    /* FULL-PAGE CLOSET CURTAIN OVERLAY (tempcloset.png) */
+    .full-closet-curtain {
+      position: absolute;
+      top: 0;
+      right: -100vw; /* Hidden off-screen right */
+      width: 100vw;
+      height: 100vh;
+      background-image: url('https://nicegirlslumber.neocities.org/tempcloset.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: -15px 0 35px rgba(0,0,0,0.5);
+      transition: right 0.7s cubic-bezier(0.77, 0, 0.175, 1); /* Curtain pull animation */
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+      box-sizing: border-box;
     }
 
-    .curtain-pull img {
+    .full-closet-curtain.open {
+      right: 0; /* Cover full screen */
+    }
+
+    .closet-close-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #f06292;
+      color: white;
+      border: 2px solid white;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-family: inherit;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+      z-index: 25;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .closet-close-btn:hover {
+      background: #ec407a;
+      transform: scale(1.05);
+    }
+
+    .closet-workspace {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-top: 50px;
     }
 
-    .curtain-pull:hover {
-      transform: translateY(5px);
+    /* Top Section: 4 Rows of 3 Folded Pants */
+    .shelves-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 60%;
+      margin: 0 auto;
     }
 
-    /* Curtain Drawer Panel */
-    .curtain-drawer {
-      position: fixed;
-      right: -360px; /* Hidden off-screen by default */
-      top: 0;
-      width: 340px;
-      height: 100%;
-      /* Curtain styling with shadow to give depth */
-      background: #ffb7b2; 
-      box-shadow: -10px 0 20px rgba(0,0,0,0.3);
-      transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1); /* Soft curtain slide */
-      padding: 25px;
-      box-sizing: border-box;
-      z-index: 10;
-      border-left: 6px solid #e57373;
+    .pants-row {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(4px);
+      padding: 8px;
+      border-radius: 12px;
+      border-bottom: 3px solid rgba(0,0,0,0.15);
     }
 
-    .curtain-drawer.open {
-      right: 0; /* Slides into view */
-    }
-
-    .close-btn {
-      float: right;
+    .pants-item {
+      width: 75px;
+      height: 65px;
       cursor: pointer;
-      font-weight: bold;
-      font-size: 1.5rem;
+      transition: transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .item-grid {
+    .pants-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+
+    .pants-item:hover {
+      transform: scale(1.2) translateY(-4px);
+    }
+
+    /* Bottom Section: Clothes Rack with 11 Shirts */
+    .rack-container {
+      width: 90%;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(4px);
+      padding: 15px 20px;
+      border-radius: 16px;
+      border-top: 4px solid #8d6e63;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .shirt-item {
+      width: 70px;
+      height: 110px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shirt-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
+    }
+
+    .shirt-item:hover {
+      transform: scale(1.18) translateY(-6px);
+    }
+
+    /* SHOE MODAL DRAWER */
+    .shoe-drawer {
+      position: fixed;
+      right: -320px;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background: rgba(255, 245, 247, 0.95);
+      backdrop-filter: blur(6px);
+      box-shadow: -10px 0 20px rgba(0,0,0,0.2);
+      transition: right 0.5s ease;
+      padding: 25px;
+      z-index: 15;
+    }
+
+    .shoe-drawer.open {
+      right: 0;
+    }
+
+    .shoe-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
-      margin-top: 25px;
-      max-height: 80vh;
-      overflow-y: auto;
+      margin-top: 20px;
     }
 
-    .item-card {
-      background: rgba(255, 255, 255, 0.7);
-      border: 2px solid #ff8b94;
-      border-radius: 12px;
-      padding: 10px;
+    .shoe-card {
+      background: white;
+      border: 2px solid #f48fb1;
+      border-radius: 10px;
+      padding: 8px;
       text-align: center;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: transform 0.2s;
     }
 
-    .item-card:hover {
-      background: #ffffff;
+    .shoe-card:hover {
+      transform: scale(1.08);
     }
 
-    .item-card img {
-      width: 80px;
-      height: 80px;
+    .shoe-card img {
+      width: 60px;
+      height: 60px;
       object-fit: contain;
     }
   </style>
@@ -202,29 +384,38 @@
 
   <div class="game-container">
     
-    <div class="controls-panel">
-      <h2>Customization</h2>
-      
-      <div class="control-group">
-        <label for="skinColor">Skin Tone Tint:</label>
-        <input type="color" id="skinColor" value="#ffffff" onchange="updateSkinColor(this.value)">
-      </div>
+    <div class="customization-curtain-container">
+      <div id="customBox" class="customization-box">
+        
+        <div class="custom-pull-tab" onclick="toggleCustomBox()" title="Pull Customization Curtain">
+          <span>PULL</span>
+          <img src="YOUR_CUSTOM_PULL_ICON.png" alt="Pull Arrow">
+        </div>
 
-      <div class="control-group">
-        <label for="eyeColor">Eye Tint:</label>
-        <input type="color" id="eyeColor" value="#ffffff" onchange="updateEyeColor(this.value)">
-      </div>
+        <h2 style="margin: 0 0 10px 0; color: #880e4f; text-align: center;">Avatar Styling</h2>
+        
+        <div class="control-group">
+          <label for="skinColor">Skin Tone Tint:</label>
+          <input type="color" id="skinColor" value="#ffffff" onchange="updateSkinColor(this.value)">
+        </div>
 
-      <div class="control-group">
-        <label for="hairColor">Hair Color Tint:</label>
-        <input type="color" id="hairColor" value="#ffffff" onchange="updateHairColor(this.value)">
-      </div>
+        <div class="control-group">
+          <label for="eyeColor">Eye Tint:</label>
+          <input type="color" id="eyeColor" value="#ffffff" onchange="updateEyeColor(this.value)">
+        </div>
 
-      <div class="control-group" style="align-items: center; margin-top: 15px;">
-        <label>Next Hairstyle:</label>
-        <button class="png-arrow-btn" onclick="cycleHairstyle()" title="Next Hairstyle">
-          <img src="YOUR_RIGHT_ARROW.png" alt="Next Hair Arrow">
-        </button>
+        <div class="control-group">
+          <label for="hairColor">Hair Color Tint:</label>
+          <input type="color" id="hairColor" value="#ffffff" onchange="updateHairColor(this.value)">
+        </div>
+
+        <div class="control-group" style="align-items: center; margin-top: 15px;">
+          <label>Cycle Hairstyle:</label>
+          <button class="png-btn" onclick="cycleHairstyle()" title="Next Hairstyle">
+            <img src="YOUR_HAIR_ARROW.png" alt="Hair Arrow">
+          </button>
+        </div>
+
       </div>
     </div>
 
@@ -233,58 +424,125 @@
         <div id="hairBack" class="avatar-layer"></div>
         <div id="bodyBase" class="avatar-layer"></div>
         <div id="eyesLayer" class="avatar-layer"></div>
-        <div id="clothingLayer" class="avatar-layer"></div>
+        <div id="pantsLayer" class="avatar-layer"></div>
+        <div id="shirtLayer" class="avatar-layer"></div>
         <div id="shoesLayer" class="avatar-layer"></div>
         <div id="hairFront" class="avatar-layer"></div>
       </div>
 
       <div class="nav-buttons">
         
-        <div class="curtain-pull" onclick="toggleDrawer('closet')" title="Pull Closet Curtain">
-          <img src="YOUR_CURTAIN_PULL_HANDLE.png" alt="Pull Curtain">
-        </div>
+        <button class="png-btn" onclick="openFullCloset()" title="Open Full Closet Curtain">
+          <img src="YOUR_CLOSET_CURTAIN_PULL.png" alt="Closet Arrow">
+          <span>Closet ➔</span>
+        </button>
 
-        <button class="png-arrow-btn" onclick="toggleDrawer('shoes')" title="Open Shoe Rack">
-          <img src="YOUR_SHOE_ICON_ARROW.png" alt="Shoes">
+        <button class="png-btn" onclick="toggleShoeDrawer()" title="Browse Shoes">
+          <img src="YOUR_SHOE_ICON.png" alt="Shoes">
+          <span>Shoes 👠</span>
         </button>
 
       </div>
     </div>
 
-    <div id="wardrobeDrawer" class="curtain-drawer">
-      <span class="close-btn" onclick="closeDrawer()">✕</span>
-      <h2 id="drawerTitle">Closet</h2>
+    <div id="fullCloset" class="full-closet-curtain">
+      <button class="closet-close-btn" onclick="closeFullCloset()">➔ Back to Avatar</button>
       
-      <div id="drawerContent" class="item-grid">
+      <div class="closet-workspace">
+        
+        <div class="shelves-container">
+          
+          <div class="pants-row">
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_1.png')"><img src="YOUR_PANTS_FOLDED_1.png" alt="Pants 1"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_2.png')"><img src="YOUR_PANTS_FOLDED_2.png" alt="Pants 2"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_3.png')"><img src="YOUR_PANTS_FOLDED_3.png" alt="Pants 3"></div>
+          </div>
+          
+          <div class="pants-row">
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_4.png')"><img src="YOUR_PANTS_FOLDED_4.png" alt="Pants 4"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_5.png')"><img src="YOUR_PANTS_FOLDED_5.png" alt="Pants 5"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_6.png')"><img src="YOUR_PANTS_FOLDED_6.png" alt="Pants 6"></div>
+          </div>
+
+          <div class="pants-row">
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_7.png')"><img src="YOUR_PANTS_FOLDED_7.png" alt="Pants 7"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_8.png')"><img src="YOUR_PANTS_FOLDED_8.png" alt="Pants 8"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_9.png')"><img src="YOUR_PANTS_FOLDED_9.png" alt="Pants 9"></div>
+          </div>
+
+          <div class="pants-row">
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_10.png')"><img src="YOUR_PANTS_FOLDED_10.png" alt="Pants 10"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_11.png')"><img src="YOUR_PANTS_FOLDED_11.png" alt="Pants 11"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_12.png')"><img src="YOUR_PANTS_FOLDED_12.png" alt="Pants 12"></div>
+          </div>
+
         </div>
+
+        <div class="rack-container">
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_1.png')"><img src="YOUR_SHIRT_HANGING_1.png" alt="Shirt 1"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_2.png')"><img src="YOUR_SHIRT_HANGING_2.png" alt="Shirt 2"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_3.png')"><img src="YOUR_SHIRT_HANGING_3.png" alt="Shirt 3"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_4.png')"><img src="YOUR_SHIRT_HANGING_4.png" alt="Shirt 4"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_5.png')"><img src="YOUR_SHIRT_HANGING_5.png" alt="Shirt 5"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_6.png')"><img src="YOUR_SHIRT_HANGING_6.png" alt="Shirt 6"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_7.png')"><img src="YOUR_SHIRT_HANGING_7.png" alt="Shirt 7"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_8.png')"><img src="YOUR_SHIRT_HANGING_8.png" alt="Shirt 8"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_9.png')"><img src="YOUR_SHIRT_HANGING_9.png" alt="Shirt 9"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_10.png')"><img src="YOUR_SHIRT_HANGING_10.png" alt="Shirt 10"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_11.png')"><img src="YOUR_SHIRT_HANGING_11.png" alt="Shirt 11"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="shoeDrawer" class="shoe-drawer">
+      <span style="float: right; cursor: pointer; font-size: 1.5rem;" onclick="toggleShoeDrawer()">✕</span>
+      <h2 style="color: #880e4f;">Shoe Collection</h2>
+      <div class="shoe-grid">
+        <div class="shoe-card" onclick="equipShoes('YOUR_SHOES_1.png')">
+          <img src="YOUR_SHOES_ICON_1.png" alt="Shoes 1"><p>Sneakers</p>
+        </div>
+        <div class="shoe-card" onclick="equipShoes('YOUR_SHOES_2.png')">
+          <img src="YOUR_SHOES_ICON_2.png" alt="Shoes 2"><p>Heels</p>
+        </div>
+      </div>
     </div>
 
   </div>
 
   <script>
-    // State Tracking
+    // State Management
     const state = {
       hairstyleIndex: 0
     };
 
-    // Replace these arrays with paths to your actual PNG assets!
     const hairstyles = [
       { front: 'YOUR_HAIR_FRONT_1.png', back: 'YOUR_HAIR_BACK_1.png' },
       { front: 'YOUR_HAIR_FRONT_2.png', back: 'YOUR_HAIR_BACK_2.png' },
       { front: 'YOUR_HAIR_FRONT_3.png', back: 'YOUR_HAIR_BACK_3.png' }
     ];
 
-    const topsList = [
-      { name: 'Pink Blouse', icon: 'YOUR_BLOUSE1_ICON.png', fullPng: 'YOUR_BLOUSE1_LAYER.png' },
-      { name: 'Blue Shirt', icon: 'YOUR_SHIRT1_ICON.png', fullPng: 'YOUR_SHIRT1_LAYER.png' }
-    ];
+    // Toggle Customization Curtain Box
+    function toggleCustomBox() {
+      const box = document.getElementById('customBox');
+      box.classList.toggle('open');
+    }
 
-    const shoesList = [
-      { name: 'Sneakers', icon: 'YOUR_SNEAKERS_ICON.png', fullPng: 'YOUR_SNEAKERS_LAYER.png' },
-      { name: 'Heels', icon: 'YOUR_HEELS_ICON.png', fullPng: 'YOUR_HEELS_LAYER.png' }
-    ];
+    // Toggle Full Page Closet Curtain
+    function openFullCloset() {
+      document.getElementById('fullCloset').classList.add('open');
+    }
 
-    // Color Pickers Adjustments
+    function closeFullCloset() {
+      document.getElementById('fullCloset').classList.remove('open');
+    }
+
+    // Toggle Shoe Drawer
+    function toggleShoeDrawer() {
+      document.getElementById('shoeDrawer').classList.toggle('open');
+    }
+
+    // Color Tint Controls
     function updateSkinColor(color) {
       document.getElementById('bodyBase').style.filter = `drop-shadow(0 0 0 ${color})`;
     }
@@ -298,56 +556,25 @@
       document.getElementById('hairBack').style.filter = `drop-shadow(0 0 0 ${color})`;
     }
 
-    // Hairstyle Switcher using PNG Arrow
+    // Hairstyle Switcher
     function cycleHairstyle() {
       state.hairstyleIndex = (state.hairstyleIndex + 1) % hairstyles.length;
-      const currentHair = hairstyles[state.hairstyleIndex];
-      
-      document.getElementById('hairFront').style.backgroundImage = `url('${currentHair.front}')`;
-      document.getElementById('hairBack').style.backgroundImage = `url('${currentHair.back}')`;
+      const hair = hairstyles[state.hairstyleIndex];
+      document.getElementById('hairFront').style.backgroundImage = `url('${hair.front}')`;
+      document.getElementById('hairBack').style.backgroundImage = `url('${hair.back}')`;
     }
 
-    // Drawer Visibility Management
-    function toggleDrawer(type) {
-      const drawer = document.getElementById('wardrobeDrawer');
-      const title = document.getElementById('drawerTitle');
-
-      if (type === 'closet') {
-        title.innerText = "Shirts & Blouses";
-        populateItems(topsList, 'top');
-      } else if (type === 'shoes') {
-        title.innerText = "Shoes Collection";
-        populateItems(shoesList, 'shoes');
-      }
-
-      drawer.classList.add('open');
+    // Apply Clothing PNGs onto Avatar
+    function equipPants(pantsPngUrl) {
+      document.getElementById('pantsLayer').style.backgroundImage = `url('${pantsPngUrl}')`;
     }
 
-    function closeDrawer() {
-      document.getElementById('wardrobeDrawer').classList.remove('open');
+    function equipShirt(shirtPngUrl) {
+      document.getElementById('shirtLayer').style.backgroundImage = `url('${shirtPngUrl}')`;
     }
 
-    // Populate Curtain Drawer Grid
-    function populateItems(itemList, category) {
-      const content = document.getElementById('drawerContent');
-      content.innerHTML = ''; // Clear previous items
-
-      itemList.forEach((item) => {
-        const card = document.createElement('div');
-        card.className = 'item-card';
-        card.innerHTML = `<img src="${item.icon}" alt="${item.name}"><p>${item.name}</p>`;
-        card.onclick = () => applyClothingItem(category, item.fullPng);
-        content.appendChild(card);
-      });
-    }
-
-    // Apply PNG Item to Character Stage
-    function applyClothingItem(category, pngPath) {
-      if (category === 'top') {
-        document.getElementById('clothingLayer').style.backgroundImage = `url('${pngPath}')`;
-      } else if (category === 'shoes') {
-        document.getElementById('shoesLayer').style.backgroundImage = `url('${pngPath}')`;
-      }
+    function equipShoes(shoesPngUrl) {
+      document.getElementById('shoesLayer').style.backgroundImage = `url('${shoesPngUrl}')`;
     }
   </script>
 </body>
