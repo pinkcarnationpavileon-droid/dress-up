@@ -127,6 +127,35 @@
       background: #fff;
     }
 
+    /* Body Type Buttons */
+    .body-type-controls {
+      display: flex;
+      gap: 5px;
+      justify-content: space-between;
+    }
+
+    .body-btn {
+      flex: 1;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #f48fb1;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .body-btn:hover {
+      background: #fce4ec;
+    }
+
+    .body-btn.active {
+      background: #f06292;
+      color: white;
+      border-color: #f06292;
+    }
+
     /* MAIN STAGE (Avatar Display) */
     .avatar-stage {
       flex: 1;
@@ -154,8 +183,12 @@
       pointer-events: none;
     }
 
-    /* Placeholder Layer Image Paths */
-    #bodyBase { background-image: url('YOUR_BASE_BODY.png'); }
+    /* NEW: Placeholder Body Base Images 
+      By default, Body Type A is loaded.
+    */
+    #bodyBase { background-image: url('YOUR_BODY_A_BASE.png'); }
+
+    /* Hair & Face work for all body types usually */
     #eyesLayer { background-image: url('YOUR_EYES.png'); }
     #hairBack { background-image: url('YOUR_HAIR_BACK_DEFAULT.png'); }
     #hairFront { background-image: url('YOUR_HAIR_FRONT_DEFAULT.png'); }
@@ -395,6 +428,15 @@
         <h2 style="margin: 0 0 10px 0; color: #880e4f; text-align: center;">Avatar Styling</h2>
         
         <div class="control-group">
+          <label>Body Type:</label>
+          <div class="body-type-controls">
+            <button class="body-btn active" onclick="setBodyType('a')" id="btnBodyA">A</button>
+            <button class="body-btn" onclick="setBodyType('b')" id="btnBodyB">B</button>
+            <button class="body-btn" onclick="setBodyType('c')" id="btnBodyC">C</button>
+          </div>
+        </div>
+
+        <div class="control-group">
           <label for="skinColor">Skin Tone Tint:</label>
           <input type="color" id="skinColor" value="#ffffff" onchange="updateSkinColor(this.value)">
         </div>
@@ -453,43 +495,43 @@
         <div class="shelves-container">
           
           <div class="pants-row">
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_1.png')"><img src="YOUR_PANTS_FOLDED_1.png" alt="Pants 1"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_2.png')"><img src="YOUR_PANTS_FOLDED_2.png" alt="Pants 2"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_3.png')"><img src="YOUR_PANTS_FOLDED_3.png" alt="Pants 3"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(0)"><img src="YOUR_PANTS_FOLDED_1.png" alt="Pants 1"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(1)"><img src="YOUR_PANTS_FOLDED_2.png" alt="Pants 2"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(2)"><img src="YOUR_PANTS_FOLDED_3.png" alt="Pants 3"></div>
           </div>
           
           <div class="pants-row">
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_4.png')"><img src="YOUR_PANTS_FOLDED_4.png" alt="Pants 4"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_5.png')"><img src="YOUR_PANTS_FOLDED_5.png" alt="Pants 5"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_6.png')"><img src="YOUR_PANTS_FOLDED_6.png" alt="Pants 6"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(3)"><img src="YOUR_PANTS_FOLDED_4.png" alt="Pants 4"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(4)"><img src="YOUR_PANTS_FOLDED_5.png" alt="Pants 5"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(5)"><img src="YOUR_PANTS_FOLDED_6.png" alt="Pants 6"></div>
           </div>
 
           <div class="pants-row">
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_7.png')"><img src="YOUR_PANTS_FOLDED_7.png" alt="Pants 7"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_8.png')"><img src="YOUR_PANTS_FOLDED_8.png" alt="Pants 8"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_9.png')"><img src="YOUR_PANTS_FOLDED_9.png" alt="Pants 9"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(6)"><img src="YOUR_PANTS_FOLDED_7.png" alt="Pants 7"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(7)"><img src="YOUR_PANTS_FOLDED_8.png" alt="Pants 8"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(8)"><img src="YOUR_PANTS_FOLDED_9.png" alt="Pants 9"></div>
           </div>
 
           <div class="pants-row">
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_10.png')"><img src="YOUR_PANTS_FOLDED_10.png" alt="Pants 10"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_11.png')"><img src="YOUR_PANTS_FOLDED_11.png" alt="Pants 11"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_12.png')"><img src="YOUR_PANTS_FOLDED_12.png" alt="Pants 12"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(9)"><img src="YOUR_PANTS_FOLDED_10.png" alt="Pants 10"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(10)"><img src="YOUR_PANTS_FOLDED_11.png" alt="Pants 11"></div>
+            <div class="pants-item" onclick="equipPantsByIndex(11)"><img src="YOUR_PANTS_FOLDED_12.png" alt="Pants 12"></div>
           </div>
 
         </div>
 
         <div class="rack-container">
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_1.png')"><img src="YOUR_SHIRT_HANGING_1.png" alt="Shirt 1"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_2.png')"><img src="YOUR_SHIRT_HANGING_2.png" alt="Shirt 2"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_3.png')"><img src="YOUR_SHIRT_HANGING_3.png" alt="Shirt 3"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_4.png')"><img src="YOUR_SHIRT_HANGING_4.png" alt="Shirt 4"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_5.png')"><img src="YOUR_SHIRT_HANGING_5.png" alt="Shirt 5"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_6.png')"><img src="YOUR_SHIRT_HANGING_6.png" alt="Shirt 6"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_7.png')"><img src="YOUR_SHIRT_HANGING_7.png" alt="Shirt 7"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_8.png')"><img src="YOUR_SHIRT_HANGING_8.png" alt="Shirt 8"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_9.png')"><img src="YOUR_SHIRT_HANGING_9.png" alt="Shirt 9"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_10.png')"><img src="YOUR_SHIRT_HANGING_10.png" alt="Shirt 10"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_11.png')"><img src="YOUR_SHIRT_HANGING_11.png" alt="Shirt 11"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(0)"><img src="YOUR_SHIRT_HANGING_1.png" alt="Shirt 1"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(1)"><img src="YOUR_SHIRT_HANGING_2.png" alt="Shirt 2"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(2)"><img src="YOUR_SHIRT_HANGING_3.png" alt="Shirt 3"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(3)"><img src="YOUR_SHIRT_HANGING_4.png" alt="Shirt 4"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(4)"><img src="YOUR_SHIRT_HANGING_5.png" alt="Shirt 5"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(5)"><img src="YOUR_SHIRT_HANGING_6.png" alt="Shirt 6"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(7)"><img src="YOUR_SHIRT_HANGING_7.png" alt="Shirt 7"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(8)"><img src="YOUR_SHIRT_HANGING_8.png" alt="Shirt 8"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(9)"><img src="YOUR_SHIRT_HANGING_9.png" alt="Shirt 9"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(10)"><img src="YOUR_SHIRT_HANGING_10.png" alt="Shirt 10"></div>
+          <div class="shirt-item" onclick="equipShirtByIndex(11)"><img src="YOUR_SHIRT_HANGING_11.png" alt="Shirt 11"></div>
         </div>
 
       </div>
@@ -499,10 +541,10 @@
       <span style="float: right; cursor: pointer; font-size: 1.5rem;" onclick="toggleShoeDrawer()">✕</span>
       <h2 style="color: #880e4f;">Shoe Collection</h2>
       <div class="shoe-grid">
-        <div class="shoe-card" onclick="equipShoes('YOUR_SHOES_1.png')">
+        <div class="shoe-card" onclick="equipShoesByIndex(0)">
           <img src="YOUR_SHOES_ICON_1.png" alt="Shoes 1"><p>Sneakers</p>
         </div>
-        <div class="shoe-card" onclick="equipShoes('YOUR_SHOES_2.png')">
+        <div class="shoe-card" onclick="equipShoesByIndex(1)">
           <img src="YOUR_SHOES_ICON_2.png" alt="Shoes 2"><p>Heels</p>
         </div>
       </div>
@@ -511,71 +553,24 @@
   </div>
 
   <script>
-    // State Management
-    const state = {
-      hairstyleIndex: 0
-    };
+    // --- Configuration Variables ---
+    // You will need to define the names of your clothing styles here.
+    // Replace these placeholders with your actual style filenames.
 
+    // JavaScript will look for files like: style1_b.png, jeans_c.png, etc.
+    const pantsStyles = ['style1', 'jeans', 'skirt', 'style4', 'style5', 'style6', 'style7', 'style8', 'style9', 'style10', 'style11', 'style12'];
+    const shirtStyles = ['style1', 'style2', 'style3', 'style4', 'style5', 'style6', 'style7', 'style8', 'style9', 'style10', 'style11'];
+    
+    // Some shoes might fit all body types, but if you want separate ones, list them here:
+    // (JavaScript will look for files like sneakers_a.png)
+    const shoesStyles = ['sneakers', 'heels'];
+
+    // Placeholder Hairstyle PNGs (usually universal)
     const hairstyles = [
       { front: 'YOUR_HAIR_FRONT_1.png', back: 'YOUR_HAIR_BACK_1.png' },
       { front: 'YOUR_HAIR_FRONT_2.png', back: 'YOUR_HAIR_BACK_2.png' },
       { front: 'YOUR_HAIR_FRONT_3.png', back: 'YOUR_HAIR_BACK_3.png' }
     ];
 
-    // Toggle Customization Curtain Box
-    function toggleCustomBox() {
-      const box = document.getElementById('customBox');
-      box.classList.toggle('open');
-    }
-
-    // Toggle Full Page Closet Curtain
-    function openFullCloset() {
-      document.getElementById('fullCloset').classList.add('open');
-    }
-
-    function closeFullCloset() {
-      document.getElementById('fullCloset').classList.remove('open');
-    }
-
-    // Toggle Shoe Drawer
-    function toggleShoeDrawer() {
-      document.getElementById('shoeDrawer').classList.toggle('open');
-    }
-
-    // Color Tint Controls
-    function updateSkinColor(color) {
-      document.getElementById('bodyBase').style.filter = `drop-shadow(0 0 0 ${color})`;
-    }
-
-    function updateEyeColor(color) {
-      document.getElementById('eyesLayer').style.filter = `drop-shadow(0 0 0 ${color})`;
-    }
-
-    function updateHairColor(color) {
-      document.getElementById('hairFront').style.filter = `drop-shadow(0 0 0 ${color})`;
-      document.getElementById('hairBack').style.filter = `drop-shadow(0 0 0 ${color})`;
-    }
-
-    // Hairstyle Switcher
-    function cycleHairstyle() {
-      state.hairstyleIndex = (state.hairstyleIndex + 1) % hairstyles.length;
-      const hair = hairstyles[state.hairstyleIndex];
-      document.getElementById('hairFront').style.backgroundImage = `url('${hair.front}')`;
-      document.getElementById('hairBack').style.backgroundImage = `url('${hair.back}')`;
-    }
-
-    // Apply Clothing PNGs onto Avatar
-    function equipPants(pantsPngUrl) {
-      document.getElementById('pantsLayer').style.backgroundImage = `url('${pantsPngUrl}')`;
-    }
-
-    function equipShirt(shirtPngUrl) {
-      document.getElementById('shirtLayer').style.backgroundImage = `url('${shirtPngUrl}')`;
-    }
-
-    function equipShoes(shoesPngUrl) {
-      document.getElementById('shoesLayer').style.backgroundImage = `url('${shoesPngUrl}')`;
-    }
-  </script>
-</body>
-</html>
+    // --- Game State Management ---
+    const
