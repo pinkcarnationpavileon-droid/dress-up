@@ -54,6 +54,7 @@
     .popup-overlay.hidden { display: none !important; }
 
     .popup-card {
+      position: relative;
       background: #fff0f5;
       border: 4px solid #f48fb1;
       border-radius: 20px;
@@ -90,6 +91,11 @@
       padding: 10px;
       cursor: pointer;
       transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .body-card-option img,
+    .body-card-option span {
+      pointer-events: none; /* Allows click events to hit the parent card cleanly */
     }
 
     .body-card-option:hover {
@@ -219,7 +225,7 @@
       pointer-events: none;
     }
 
-    /* SVG Tint Filter Applied Directly to Body Base */
+    /* SVG Filter applied directly to body PNG */
     #bodyBase {
       filter: url(#skinTintFilter);
     }
@@ -250,7 +256,7 @@
     }
 
     /* =========================================================
-       FULL CLOSET OVERLAY (tempcloset.png)
+       FULL CLOSET OVERLAY
        ========================================================= */
     .full-closet-curtain {
       position: absolute;
@@ -383,6 +389,11 @@
 
   <div id="bodyPopup" class="popup-overlay">
     <div class="popup-card">
+      <button onclick="document.getElementById('bodyPopup').classList.add('hidden')" 
+              style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #880e4f;">
+        ✕
+      </button>
+
       <h2>Welcome to Dress-Up Studio!</h2>
       <p>Which body type suits you best?</p>
       
@@ -461,16 +472,6 @@
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_5.png')"><img src="YOUR_PANTS_FOLDED_5.png" alt="Pants 5"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_6.png')"><img src="YOUR_PANTS_FOLDED_6.png" alt="Pants 6"></div>
           </div>
-          <div class="pants-row">
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_7.png')"><img src="YOUR_PANTS_FOLDED_7.png" alt="Pants 7"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_8.png')"><img src="YOUR_PANTS_FOLDED_8.png" alt="Pants 8"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_9.png')"><img src="YOUR_PANTS_FOLDED_9.png" alt="Pants 9"></div>
-          </div>
-          <div class="pants-row">
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_10.png')"><img src="YOUR_PANTS_FOLDED_10.png" alt="Pants 10"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_11.png')"><img src="YOUR_PANTS_FOLDED_11.png" alt="Pants 11"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_12.png')"><img src="YOUR_PANTS_FOLDED_12.png" alt="Pants 12"></div>
-          </div>
         </div>
 
         <div class="rack-container">
@@ -478,13 +479,6 @@
           <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_2.png')"><img src="YOUR_SHIRT_HANGING_2.png" alt="Shirt 2"></div>
           <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_3.png')"><img src="YOUR_SHIRT_HANGING_3.png" alt="Shirt 3"></div>
           <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_4.png')"><img src="YOUR_SHIRT_HANGING_4.png" alt="Shirt 4"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_5.png')"><img src="YOUR_SHIRT_HANGING_5.png" alt="Shirt 5"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_6.png')"><img src="YOUR_SHIRT_HANGING_6.png" alt="Shirt 6"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_7.png')"><img src="YOUR_SHIRT_HANGING_7.png" alt="Shirt 7"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_8.png')"><img src="YOUR_SHIRT_HANGING_8.png" alt="Shirt 8"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_9.png')"><img src="YOUR_SHIRT_HANGING_9.png" alt="Shirt 9"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_10.png')"><img src="YOUR_SHIRT_HANGING_10.png" alt="Shirt 10"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_11.png')"><img src="YOUR_SHIRT_HANGING_11.png" alt="Shirt 11"></div>
         </div>
       </div>
     </div>
@@ -511,8 +505,12 @@
     const gameState = { activeBodyType: 'a' };
 
     function selectInitialBody(type) {
+      // Hide modal immediately
+      const popup = document.getElementById('bodyPopup');
+      if (popup) {
+        popup.classList.add('hidden');
+      }
       setBodyType(type);
-      document.getElementById('bodyPopup').classList.add('hidden');
     }
 
     function setBodyType(type) {
@@ -525,11 +523,14 @@
         bodyEl.style.backgroundImage = `url('${bodyImages[type]}')`;
       }
 
-      // Update drawer button styling
-      document.getElementById('btnBodyA').classList.remove('active');
-      document.getElementById('btnBodyB').classList.remove('active');
-      document.getElementById('btnBodyC').classList.remove('active');
-      document.getElementById(`btnBody${type.toUpperCase()}`).classList.add('active');
+      // Safe update for button highlight state
+      ['A', 'B', 'C'].forEach(letter => {
+        const btn = document.getElementById(`btnBody${letter}`);
+        if (btn) btn.classList.remove('active');
+      });
+
+      const activeBtn = document.getElementById(`btnBody${type.toUpperCase()}`);
+      if (activeBtn) activeBtn.classList.add('active');
     }
 
     function toggleCustomBox() {
