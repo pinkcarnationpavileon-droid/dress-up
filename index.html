@@ -36,80 +36,85 @@
     /* =========================================================
        POP-UP MODAL: BODY TYPE SELECTION
        ========================================================= */
-    .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 100;
-      transition: opacity 0.3s ease;
-    }
+   /* Pop-Up Overlay (Dark translucent background) */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensures it sits on top of all other elements */
+}
 
-    .popup-overlay.hidden { display: none; }
+/* Class to hide the pop-up */
+.popup-overlay.hidden {
+  display: none !important;
+}
 
-    .popup-card {
-      background: #fff0f5;
-      border: 4px solid #f48fb1;
-      border-radius: 20px;
-      padding: 25px 30px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      max-width: 500px;
-      width: 90%;
-    }
+/* Pop-Up Card Box */
+.popup-card {
+  background: #fff0f5;
+  border: 4px solid #f48fb1;
+  border-radius: 20px;
+  padding: 25px 30px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+}
 
-    .popup-card h2 {
-      margin: 0 0 10px 0;
-      color: #880e4f;
-      font-size: 2.2rem;
-    }
+.popup-card h2 {
+  margin: 0 0 10px 0;
+  color: #880e4f;
+  font-size: 2.2rem;
+}
 
-    .popup-card p {
-      color: #5c002e;
-      font-size: 1.3rem;
-      margin-bottom: 20px;
-    }
+.popup-card p {
+  color: #5c002e;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
 
-    .body-options-grid {
-      display: flex;
-      justify-content: space-around;
-      gap: 15px;
-    }
+.body-options-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+}
 
-    .body-card-option {
-      flex: 1;
-      background: white;
-      border: 3px solid #f48fb1;
-      border-radius: 15px;
-      padding: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
-    }
+/* Clickable Body Cards inside Pop-Up */
+.body-card-option {
+  flex: 1;
+  background: white;
+  border: 3px solid #f48fb1;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
 
-    .body-card-option:hover {
-      transform: scale(1.08);
-      border-color: #f06292;
-    }
+.body-card-option:hover {
+  transform: scale(1.08);
+  border-color: #f06292;
+}
 
-    .body-card-option img {
-      width: 100%;
-      height: 140px;
-      object-fit: contain;
-    }
+.body-card-option img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+}
 
-    .body-card-option span {
-      display: block;
-      margin-top: 8px;
-      font-size: 1.4rem;
-      color: #880e4f;
-      font-weight: bold;
-    }
+.body-card-option span {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.4rem;
+  color: #880e4f;
+  font-weight: bold;
+}
 
     /* =========================================================
        CUSTOMIZATION BOX (LEFT CURTAIN)
@@ -394,26 +399,26 @@
 <body>
 
   <div id="bodyPopup" class="popup-overlay">
-    <div class="popup-card">
-      <h2>Welcome to Dress-Up Studio!</h2>
-      <p>Which body type suits you best?</p>
-      
-      <div class="body-options-grid">
-        <div class="body-card-option" onclick="selectInitialBody('a')">
-          <img src="https://nicegirlslumber.neocities.org/bodyA.png" alt="Body A">
-          <span>Body A</span>
-        </div>
-        <div class="body-card-option" onclick="selectInitialBody('b')">
-          <img src="https://nicegirlslumber.neocities.org/bodyB.png" alt="Body B">
-          <span>Body B</span>
-        </div>
-        <div class="body-card-option" onclick="selectInitialBody('c')">
-          <img src="https://nicegirlslumber.neocities.org/bodyC.png" alt="Body C">
-          <span>Body C</span>
-        </div>
+  <div class="popup-card">
+    <h2>Welcome to Dress-Up Studio!</h2>
+    <p>Which body type suits you best?</p>
+    
+    <div class="body-options-grid">
+      <div class="body-card-option" onclick="selectInitialBody('a')">
+        <img src="https://nicegirlslumber.neocities.org/bodyA.png" alt="Body A">
+        <span>Body A</span>
+      </div>
+      <div class="body-card-option" onclick="selectInitialBody('b')">
+        <img src="https://nicegirlslumber.neocities.org/bodyB.png" alt="Body B">
+        <span>Body B</span>
+      </div>
+      <div class="body-card-option" onclick="selectInitialBody('c')">
+        <img src="https://nicegirlslumber.neocities.org/bodyC.png" alt="Body C">
+        <span>Body C</span>
       </div>
     </div>
   </div>
+</div>
 
   <div class="game-container">
     
@@ -506,21 +511,34 @@
   </div>
 
   <script>
-    const bodyImages = {
-      a: 'https://nicegirlslumber.neocities.org/bodyA.png',
-      b: 'https://nicegirlslumber.neocities.org/bodyB.png',
-      c: 'https://nicegirlslumber.neocities.org/bodyC.png'
-    };
+    // Neocities PNG Paths
+const bodyImages = {
+  a: 'https://nicegirlslumber.neocities.org/bodyA.png',
+  b: 'https://nicegirlslumber.neocities.org/bodyB.png',
+  c: 'https://nicegirlslumber.neocities.org/bodyC.png'
+};
 
-    const gameState = { activeBodyType: 'a' };
+// Function called when player clicks a body card in the pop-up
+function selectInitialBody(type) {
+  // 1. Update the base avatar image
+  setBodyType(type);
+  
+  // 2. Hide the pop-up modal
+  const popup = document.getElementById('bodyPopup');
+  if (popup) {
+    popup.classList.add('hidden');
+  }
+}
 
-    function selectInitialBody(type) {
-      setBodyType(type);
-      document.getElementById('bodyPopup').classList.add('hidden');
-    }
+// Function to set the body type on the avatar stage
+function setBodyType(type) {
+  if (!bodyImages[type]) return;
 
-    function setBodyType(type) {
-      if (!bodyImages[type]) return;
+  const bodyEl = document.getElementById('bodyBase');
+  if (bodyEl) {
+    bodyEl.style.backgroundImage = `url('${bodyImages[type]}')`;
+  }
+}
 
       gameState.activeBodyType = type;
 
