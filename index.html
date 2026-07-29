@@ -51,9 +51,7 @@
       transition: opacity 0.3s ease;
     }
 
-    .popup-overlay.hidden {
-      display: none;
-    }
+    .popup-overlay.hidden { display: none; }
 
     .popup-card {
       background: #fff0f5;
@@ -193,7 +191,7 @@
     }
 
     /* =========================================================
-       MAIN AVATAR STAGE
+       MAIN AVATAR STAGE (390px x 610px)
        ========================================================= */
     .avatar-stage {
       flex: 1;
@@ -203,7 +201,6 @@
       align-items: center;
     }
 
-    /* INCREASED SIZE: Up 30px from 360x580 to 390x610 */
     .avatar-container {
       position: relative;
       width: 390px;
@@ -222,17 +219,21 @@
       pointer-events: none;
     }
 
-    /* WORKING SKIN SLIDER (Mask Overlay Technique) */
+    /* Skin Color Container */
+    #skinTintWrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent; /* Updated dynamically via JS */
+      pointer-events: none;
+    }
+
+    /* Body Base PNG Layer */
     #bodyBase {
-      -webkit-mask-image: url('https://nicegirlslumber.neocities.org/bodyA.png');
-      mask-image: url('https://nicegirlslumber.neocities.org/bodyA.png');
-      -webkit-mask-size: contain;
-      mask-size: contain;
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
-      -webkit-mask-position: center;
-      mask-position: center;
-      background-color: #ffffff; /* Default Skin Tint Color */
+      background-image: url('https://nicegirlslumber.neocities.org/bodyA.png');
+      mix-blend-mode: multiply; /* Allows skin tint to pass through correctly */
     }
 
     /* RIGHT SIDE ACTION BUTTONS */
@@ -315,7 +316,6 @@
       padding-top: 50px;
     }
 
-    /* 4 Rows of 3 Folded Pants */
     .shelves-container {
       display: flex;
       flex-direction: column;
@@ -352,11 +352,8 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
 
-    .pants-item:hover {
-      transform: scale(1.2) translateY(-4px);
-    }
+    .pants-item:hover { transform: scale(1.2) translateY(-4px); }
 
-    /* Clothes Rack with 11 Hanging Shirts */
     .rack-container {
       width: 90%;
       margin: 0 auto;
@@ -390,9 +387,7 @@
       filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
     }
 
-    .shirt-item:hover {
-      transform: scale(1.18) translateY(-6px);
-    }
+    .shirt-item:hover { transform: scale(1.18) translateY(-6px); }
   </style>
 </head>
 
@@ -450,7 +445,9 @@
 
     <div class="avatar-stage">
       <div class="avatar-container">
-        <div id="bodyBase" class="avatar-layer"></div>
+        <div id="skinTintWrapper">
+          <div id="bodyBase" class="avatar-layer"></div>
+        </div>
         <div id="pantsLayer" class="avatar-layer"></div>
         <div id="shirtLayer" class="avatar-layer"></div>
         <div id="shoesLayer" class="avatar-layer"></div>
@@ -467,33 +464,27 @@
       <button class="closet-close-btn" onclick="closeFullCloset()">➔ Back to Avatar</button>
       
       <div class="closet-workspace">
-        
         <div class="shelves-container">
-          
           <div class="pants-row">
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_1.png')"><img src="YOUR_PANTS_FOLDED_1.png" alt="Pants 1"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_2.png')"><img src="YOUR_PANTS_FOLDED_2.png" alt="Pants 2"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_3.png')"><img src="YOUR_PANTS_FOLDED_3.png" alt="Pants 3"></div>
           </div>
-          
           <div class="pants-row">
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_4.png')"><img src="YOUR_PANTS_FOLDED_4.png" alt="Pants 4"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_5.png')"><img src="YOUR_PANTS_FOLDED_5.png" alt="Pants 5"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_6.png')"><img src="YOUR_PANTS_FOLDED_6.png" alt="Pants 6"></div>
           </div>
-
           <div class="pants-row">
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_7.png')"><img src="YOUR_PANTS_FOLDED_7.png" alt="Pants 7"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_8.png')"><img src="YOUR_PANTS_FOLDED_8.png" alt="Pants 8"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_9.png')"><img src="YOUR_PANTS_FOLDED_9.png" alt="Pants 9"></div>
           </div>
-
           <div class="pants-row">
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_10.png')"><img src="YOUR_PANTS_FOLDED_10.png" alt="Pants 10"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_11.png')"><img src="YOUR_PANTS_FOLDED_11.png" alt="Pants 11"></div>
             <div class="pants-item" onclick="equipPants('YOUR_PANTS_12.png')"><img src="YOUR_PANTS_FOLDED_12.png" alt="Pants 12"></div>
           </div>
-
         </div>
 
         <div class="rack-container">
@@ -509,42 +500,34 @@
           <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_10.png')"><img src="YOUR_SHIRT_HANGING_10.png" alt="Shirt 10"></div>
           <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_11.png')"><img src="YOUR_SHIRT_HANGING_11.png" alt="Shirt 11"></div>
         </div>
-
       </div>
     </div>
 
   </div>
 
   <script>
-    // Direct Links to Neocities Body PNG Assets
     const bodyImages = {
       a: 'https://nicegirlslumber.neocities.org/bodyA.png',
       b: 'https://nicegirlslumber.neocities.org/bodyB.png',
       c: 'https://nicegirlslumber.neocities.org/bodyC.png'
     };
 
-    const gameState = {
-      activeBodyType: 'a'
-    };
+    const gameState = { activeBodyType: 'a' };
 
-    // Pop-Up Selection Logic
     function selectInitialBody(type) {
       setBodyType(type);
       document.getElementById('bodyPopup').classList.add('hidden');
     }
 
-    // Set Body Type & Update Mask Image
     function setBodyType(type) {
       if (!bodyImages[type]) return;
 
       gameState.activeBodyType = type;
 
-      // Update base avatar mask image so skin tint color fills it
-      const bodyEl = document.getElementById('bodyBase');
-      bodyEl.style.webkitMaskImage = `url('${bodyImages[type]}')`;
-      bodyEl.style.maskImage = `url('${bodyImages[type]}')`;
+      // Update background-image directly
+      document.getElementById('bodyBase').style.backgroundImage = `url('${bodyImages[type]}')`;
 
-      // Update sidebar button highlights
+      // Update button indicators
       document.getElementById('btnBodyA').classList.remove('active');
       document.getElementById('btnBodyB').classList.remove('active');
       document.getElementById('btnBodyC').classList.remove('active');
@@ -563,12 +546,11 @@
       document.getElementById('fullCloset').classList.remove('open');
     }
 
-    // Working Skin Tint Color Picker Logic
+    // Smooth Tint updates
     function updateSkinColor(color) {
-      document.getElementById('bodyBase').style.backgroundColor = color;
+      document.getElementById('skinTintWrapper').style.backgroundColor = color;
     }
 
-    // Clothing Equip Logic
     function equipPants(pantsPngUrl) {
       document.getElementById('pantsLayer').style.backgroundImage = `url('${pantsPngUrl}')`;
     }
