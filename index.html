@@ -33,6 +33,9 @@
       position: relative;
     }
 
+    /* =========================================================
+        POP-UP MODAL: BODY TYPE SELECTION
+        ========================================================= */
     .popup-overlay {
       position: fixed;
       top: 0;
@@ -114,6 +117,9 @@
       font-weight: bold;
     }
 
+    /* =========================================================
+        CUSTOMIZATION BOX (TOP LEFT CORNER DROPDOWN)
+        ========================================================= */
     .customization-curtain-container {
       position: absolute;
       left: 20px;
@@ -199,6 +205,9 @@
       cursor: pointer;
     }
 
+    /* =========================================================
+        MAIN AVATAR STAGE (390px x 610px)
+        ========================================================= */
     .avatar-stage {
       flex: 1;
       position: relative;
@@ -229,28 +238,75 @@
       filter: url(#skinTintFilter);
     }
 
-    .png-btn {
-      background: rgba(255, 255, 255, 0.85);
-      border: 3px solid #f48fb1;
-      border-radius: 15px;
-      padding: 10px 18px;
+    /* PURE PNG NAVIGATION BUTTONS WITH HOVER MESSAGE SLIDER */
+    .interactive-png-btn {
+      position: relative;
+      background: none;
+      border: none;
+      padding: 0;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      display: inline-block;
+    }
+
+    .interactive-png-btn img.btn-img {
+      display: block;
+      width: 80px; /* Adjust size of your button PNG here */
+      height: auto;
+      transition: transform 0.2s;
+    }
+
+    .interactive-png-btn:hover img.btn-img {
+      transform: scale(1.1);
+    }
+
+    /* Message Box Styling */
+    .btn-message {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) scaleY(0);
+      transform-origin: top;
+      background-image: url('https://nicegirlslumber.neocities.org/commentstemp.png');
+      background-size: cover;
+      background-position: center;
       color: #880e4f;
-      font-family: inherit;
-      font-size: 1.3rem;
+      font-family: 'Gamja Flower', cursive, sans-serif;
+      font-size: 1.1rem;
       font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      transition: transform 0.2s, background 0.2s;
+      padding: 12px 16px;
+      white-space: nowrap;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      pointer-events: none;
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+      z-index: 10;
     }
 
-    .png-btn:hover {
-      transform: scale(1.08);
-      background: white;
+    /* SLIDE DOWN FOR HAIR */
+    .nav-button-hair .btn-message {
+      top: 100%;
+      margin-top: 8px;
+      transform-origin: top;
+    }
+    .nav-button-hair .interactive-png-btn:hover .btn-message {
+      transform: translateX(-50%) scaleY(1);
+      opacity: 1;
     }
 
+    /* SLIDE UP FOR CLOSET AND SHOES */
+    .nav-buttons-right .btn-message,
+    .nav-buttons-left-bottom .btn-message {
+      bottom: 100%;
+      margin-bottom: 8px;
+      transform-origin: bottom;
+    }
+    .nav-buttons-right .interactive-png-btn:hover .btn-message,
+    .nav-buttons-left-bottom .interactive-png-btn:hover .btn-message {
+      transform: translateX(-50%) scaleY(1);
+      opacity: 1;
+    }
+
+    /* POSITIONING FOR THE BUTTONS */
     .nav-buttons-right {
       position: absolute;
       right: 30px;
@@ -273,6 +329,9 @@
       z-index: 5;
     }
 
+    /* =========================================================
+        FULL CLOSET OVERLAY (SLIDES FROM RIGHT)
+        ========================================================= */
     .full-closet-curtain {
       position: absolute;
       top: 0;
@@ -398,6 +457,9 @@
 
     .shirt-item:hover { transform: scale(1.18) translateY(-6px); }
 
+    /* =========================================================
+        SHOE RACK OVERLAY (SLIDES FROM LEFT)
+        ========================================================= */
     .shoe-rack-curtain {
       position: absolute;
       top: 0;
@@ -588,23 +650,23 @@
       </div>
 
       <div class="nav-button-hair">
-        <button class="png-btn" onclick="openHairModal()">
-          <span>Hair</span>
-          <img src="https://nicegirlslumber.neocities.org/Arrow1.png" alt="Arrow" style="width: 24px; height: 24px; margin-top: 5px;">
+        <button class="interactive-png-btn" onclick="openHairModal()">
+          <img src="YOUR_HAIR_BTN.png" alt="Hair Button" class="btn-img">
+          <div class="btn-message">Change Hair</div>
         </button>
       </div>
 
       <div class="nav-buttons-right">
-        <button class="png-btn" onclick="openFullCloset()">
-          <span>Closet</span>
-          <img src="https://nicegirlslumber.neocities.org/Arrow9.png" alt="Arrow" style="width: 24px; height: 24px; margin-top: 5px;">
+        <button class="interactive-png-btn" onclick="openFullCloset()">
+          <img src="YOUR_CLOSET_BTN.png" alt="Closet Button" class="btn-img">
+          <div class="btn-message">Open Closet</div>
         </button>
       </div>
 
       <div class="nav-buttons-left-bottom">
-        <button class="png-btn" onclick="openShoeRack()">
-          <img src="https://nicegirlslumber.neocities.org/Arrow11.png" alt="Arrow" style="width: 24px; height: 24px; margin-bottom: 5px;">
-          <span>Shoes</span>
+        <button class="interactive-png-btn" onclick="openShoeRack()">
+          <img src="YOUR_SHOES_BTN.png" alt="Shoes Button" class="btn-img">
+          <div class="btn-message">Shoe Rack</div>
         </button>
       </div>
     </div>
@@ -705,6 +767,7 @@
       document.getElementById('customBox').classList.toggle('open');
     }
 
+    /* Closet Open/Close */
     function openFullCloset() {
       document.getElementById('fullCloset').classList.add('open');
     }
@@ -713,6 +776,7 @@
       document.getElementById('fullCloset').classList.remove('open');
     }
 
+    /* Shoe Rack Open/Close */
     function openShoeRack() {
       document.getElementById('shoeRack').classList.add('open');
     }
@@ -721,10 +785,12 @@
       document.getElementById('shoeRack').classList.remove('open');
     }
 
+    /* Hair Modal Placeholder */
     function openHairModal() {
       alert("Hair selection panel can be hooked up here!");
     }
 
+    /* SVG Color Matrix Skin Tinting */
     function updateSkinColor(hexColor) {
       const r = parseInt(hexColor.slice(1, 3), 16) / 255;
       const g = parseInt(hexColor.slice(3, 5), 16) / 255;
@@ -741,6 +807,7 @@
       }
     }
 
+    /* Facial Feature Equip Functions */
     function equipEyes(imgUrl) {
       document.getElementById('eyesLayer').style.backgroundImage = imgUrl ? `url('${imgUrl}')` : 'none';
     }
@@ -753,6 +820,7 @@
       document.getElementById('lipsLayer').style.backgroundImage = imgUrl ? `url('${imgUrl}')` : 'none';
     }
 
+    /* Clothing Equip Functions */
     function equipPants(pantsPngUrl) {
       document.getElementById('pantsLayer').style.backgroundImage = `url('${pantsPngUrl}')`;
     }
