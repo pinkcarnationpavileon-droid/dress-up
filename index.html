@@ -139,7 +139,7 @@
       border-top: none;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 12px;
       pointer-events: auto;
       transform: translateY(-100%);
       transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
@@ -177,7 +177,7 @@
 
     .body-btn {
       flex: 1;
-      padding: 8px;
+      padding: 6px;
       background: #fff;
       border: 2px solid #f48fb1;
       border-radius: 8px;
@@ -190,6 +190,20 @@
       background: #f06292;
       color: white;
       border-color: #f06292;
+    }
+
+    /* DROPDOWN SELECT STYLING FOR EYES, NOSE, LIPS */
+    .feature-select {
+      width: 100%;
+      padding: 6px;
+      border-radius: 8px;
+      border: 2px solid #f48fb1;
+      font-family: inherit;
+      font-size: 1.1rem;
+      background: white;
+      color: #880e4f;
+      outline: none;
+      cursor: pointer;
     }
 
     /* =========================================================
@@ -524,7 +538,7 @@
         
         <div>
           <label style="color: #880e4f; font-weight: bold;">Body Type:</label>
-          <div class="body-type-controls" style="margin-top: 5px;">
+          <div class="body-type-controls" style="margin-top: 3px;">
             <button class="body-btn active" onclick="setBodyType('a')" id="btnBodyA">A</button>
             <button class="body-btn" onclick="setBodyType('b')" id="btnBodyB">B</button>
             <button class="body-btn" onclick="setBodyType('c')" id="btnBodyC">C</button>
@@ -533,7 +547,40 @@
 
         <div>
           <label style="color: #880e4f; font-weight: bold;">Skin Tint:</label>
-          <input type="color" id="skinColor" value="#ffffff" oninput="updateSkinColor(this.value)" style="width:100%; height:35px; cursor:pointer;">
+          <input type="color" id="skinColor" value="#ffffff" oninput="updateSkinColor(this.value)" style="width:100%; height:30px; cursor:pointer; margin-top:3px;">
+        </div>
+
+        <div>
+          <label style="color: #880e4f; font-weight: bold;">Eyes:</label>
+          <select class="feature-select" onchange="equipEyes(this.value)" style="margin-top:3px;">
+            <option value="">None</option>
+            <option value="YOUR_EYES_1.png">Eye Style 1</option>
+            <option value="YOUR_EYES_2.png">Eye Style 2</option>
+            <option value="YOUR_EYES_3.png">Eye Style 3</option>
+            <option value="YOUR_EYES_4.png">Eye Style 4</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="color: #880e4f; font-weight: bold;">Nose:</label>
+          <select class="feature-select" onchange="equipNose(this.value)" style="margin-top:3px;">
+            <option value="">None</option>
+            <option value="YOUR_NOSE_1.png">Nose Style 1</option>
+            <option value="YOUR_NOSE_2.png">Nose Style 2</option>
+            <option value="YOUR_NOSE_3.png">Nose Style 3</option>
+            <option value="YOUR_NOSE_4.png">Nose Style 4</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="color: #880e4f; font-weight: bold;">Lips:</label>
+          <select class="feature-select" onchange="equipLips(this.value)" style="margin-top:3px;">
+            <option value="">None</option>
+            <option value="YOUR_LIPS_1.png">Lip Style 1</option>
+            <option value="YOUR_LIPS_2.png">Lip Style 2</option>
+            <option value="YOUR_LIPS_3.png">Lip Style 3</option>
+            <option value="YOUR_LIPS_4.png">Lip Style 4</option>
+          </select>
         </div>
 
       </div>
@@ -542,6 +589,11 @@
     <div class="avatar-stage">
       <div class="avatar-container">
         <div id="bodyBase" class="avatar-layer"></div>
+
+        <div id="eyesLayer" class="avatar-layer"></div>
+        <div id="noseLayer" class="avatar-layer"></div>
+        <div id="lipsLayer" class="avatar-layer"></div>
+
         <div id="pantsLayer" class="avatar-layer"></div>
         <div id="shirtLayer" class="avatar-layer"></div>
         <div id="shoesLayer" class="avatar-layer"></div>
@@ -691,6 +743,20 @@
       }
     }
 
+    /* Facial Feature Equip Functions */
+    function equipEyes(imgUrl) {
+      document.getElementById('eyesLayer').style.backgroundImage = imgUrl ? `url('${imgUrl}')` : 'none';
+    }
+
+    function equipNose(imgUrl) {
+      document.getElementById('noseLayer').style.backgroundImage = imgUrl ? `url('${imgUrl}')` : 'none';
+    }
+
+    function equipLips(imgUrl) {
+      document.getElementById('lipsLayer').style.backgroundImage = imgUrl ? `url('${imgUrl}')` : 'none';
+    }
+
+    /* Clothing Equip Functions */
     function equipPants(pantsPngUrl) {
       document.getElementById('pantsLayer').style.backgroundImage = `url('${pantsPngUrl}')`;
     }
