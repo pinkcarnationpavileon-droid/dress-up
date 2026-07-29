@@ -1,1 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dress-Up Studio</title>
+  <link rel="stylesheet" href="style-4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Gamja Flower', cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #fce4ec;
+    }
 
+    /* Layout Wrapper */
+    .game-container {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Left Panel: Customization Controls */
+    .controls-panel {
+      width: 300px;
+      padding: 20px;
+      background: #ffffff;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 2;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    /* Main Viewport: Character Display */
+    .avatar-stage {
+      flex: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .avatar-container {
+      position: relative;
+      width: 300px;
+      height: 500px;
+      border: 2px dashed #f48fb1;
+      border-radius: 12px;
+    }
+
+    /* Canvas Elements Layering */
+    .avatar-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* Navigation / Drawer Controls */
+    .nav-buttons {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 5;
+    }
+
+    .nav-btn {
+      padding: 12px 20px;
+      font-family: inherit;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 20px;
+      background: #f06292;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .nav-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* Sliding Wardrobe Drawer */
+    .wardrobe-drawer {
+      position: fixed;
+      right: -350px;
+      top: 0;
+      width: 320px;
+      height: 100%;
+      background: #ffffff;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+      transition: right 0.3s ease;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+
+    .wardrobe-drawer.open {
+      right: 0;
+    }
+
+    .close-btn {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .item-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .item-card {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .item-card:hover {
+      border-color: #f06292;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="game-container">
+    
+    <div class="controls-panel">
+      <h2>Customize Character</h2>
+      
+      <div class="control-group">
+        <label for="skinColor">Skin Tone:</label>
+        <input type="color" id="skinColor" value="#ffdbac" onchange="updateSkinColor(this.value)">
+      </div>
+
+      <div class="control-group">
+        <label for="eyeColor">Eye Color:</label>
+        <input type="color" id="eyeColor" value="#634e34" onchange="updateEyeColor(this.value)">
+      </div>
+
+      <div class="control-group">
+        <label for="hairColor">Hair Color:</label>
+        <input type="color" id="hairColor" value="#4a3728" onchange="updateHairColor(this.value)">
+      </div>
+
+      <div class="control-group">
+        <label>Hairstyle:</label>
+        <button class="nav-btn" onclick="cycleHairstyle()">Cycle Hairstyle</button>
+      </div>
+    </div>
+
+    <div class="avatar-stage">
+      <div class="avatar-container">
+        <div id="hairBack" class="avatar-layer"></div>
+        <div id="bodyBase" class="avatar-layer"></div>
+        <div id="eyesLayer" class="avatar-layer"></div>
+        <div id="clothingLayer" class="avatar-layer"></div>
+        <div id="shoesLayer" class="avatar-layer"></div>
+        <div id="hairFront" class="avatar-layer"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="toggleDrawer('closet')">Closet ➔</button>
+        <button class="nav-btn" onclick="toggleDrawer('shoes')">Shoes 👠</button>
+      </div>
+    </div>
+
+    <div id="wardrobeDrawer" class="wardrobe-drawer">
+      <span class="close-btn" onclick="closeDrawer()">✕ Close</span>
+      <h2 id="drawerTitle">Wardrobe</h2>
+      
+      <div id="drawerContent" class="item-grid">
+        </div>
+    </div>
+
+  </div>
+
+  <script>
+    // State Tracking
+    const state = {
+      hairstyleIndex: 0,
+      activeTop: null,
+      activeShoes: null
+    };
+
+    // Color Pickers Adjustments
+    function updateSkinColor(color) {
+      // Direct CSS tinting or background adjustments can go here
+      document.getElementById('bodyBase').style.backgroundColor = color;
+    }
+
+    function updateEyeColor(color) {
+      document.getElementById('eyesLayer').style.backgroundColor = color;
+    }
+
+    function updateHairColor(color) {
+      document.getElementById('hairFront').style.backgroundColor = color;
+      document.getElementById('hairBack').style.backgroundColor = color;
+    }
+
+    // Cycle Hairstyles
+    function cycleHairstyle() {
+      state.hairstyleIndex = (state.hairstyleIndex + 1) % 3;
+      const hairFront = document.getElementById('hairFront');
+      hairFront.className = `avatar-layer hair-style-${state.hairstyleIndex}`;
+    }
+
+    // Drawer Visibility Management
+    function toggleDrawer(type) {
+      const drawer = document.getElementById('wardrobeDrawer');
+      const title = document.getElementById('drawerTitle');
+      const content = document.getElementById('drawerContent');
+
+      content.innerHTML = ''; // Clear existing items
+
+      if (type === 'closet') {
+        title.innerText = "Shirts & Blouses";
+        populateItems(['Blouse 1', 'Blouse 2', 'Shirt 1'], 'top');
+      } else if (type === 'shoes') {
+        title.innerText = "Shoe Collection";
+        populateItems(['Sneakers', 'Heels', 'Boots'], 'shoes');
+      }
+
+      drawer.classList.add('open');
+    }
+
+    function closeDrawer() {
+      document.getElementById('wardrobeDrawer').classList.remove('open');
+    }
+
+    // Populate Wardrobe Drawer dynamically
+    function populateItems(items, category) {
+      const content = document.getElementById('drawerContent');
+      items.forEach((itemName, index) => {
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        itemCard.innerText = itemName;
+        itemCard.onclick = () => selectItem(category, index);
+        content.appendChild(itemCard);
+      });
+    }
+
+    // Apply Chosen Item to Main Stage without reloading
+    function selectItem(category, index) {
+      if (category === 'top') {
+        const clothing = document.getElementById('clothingLayer');
+        clothing.className = `avatar-layer top-${index}`;
+      } else if (category === 'shoes') {
+        const shoes = document.getElementById('shoesLayer');
+        shoes.className = `avatar-layer shoe-${index}`;
+      }
+    }
+  </script>
+</body>
+</html>
