@@ -248,11 +248,21 @@
       display: inline-block;
     }
 
+    /* Base size for hair & shoes */
     .interactive-png-btn img.btn-img {
       display: block;
-      width: 80px; /* Adjust size of your button PNG here */
+      width: 80px; 
       height: auto;
       transition: transform 0.2s;
+    }
+
+    /* Specific sizing adjustments per request */
+    .nav-buttons-right img.btn-img {
+      width: 110px; /* 80px + 30px bigger for closet */
+    }
+
+    .nav-buttons-left-bottom img.btn-img {
+      width: 116px; /* 80px + 36px bigger for shoe rack */
     }
 
     .interactive-png-btn:hover img.btn-img {
@@ -318,13 +328,13 @@
     .nav-buttons-left-bottom {
       position: absolute;
       left: 30px;
-      bottom: 40px;
+      bottom: 65px; /* 40px base + 25px higher */
       z-index: 5;
     }
 
     .nav-button-hair {
       position: absolute;
-      top: 15em;
+      top: calc(15em - 10px); /* 10px higher towards top */
       left: 21em;
       z-index: 5;
     }
