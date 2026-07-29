@@ -141,14 +141,13 @@
       flex-direction: column;
       gap: 15px;
       pointer-events: auto;
-      transform: translateY(-100%); /* Hidden off top edge */
+      transform: translateY(-100%);
       transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
       position: relative;
     }
 
     .customization-box.open { transform: translateY(0); }
 
-    /* Pull tab at the bottom-left of the styling box */
     .custom-pull-tab {
       position: absolute;
       bottom: -45px;
@@ -222,24 +221,11 @@
       pointer-events: none;
     }
 
-    /* SVG Filter applied directly to body PNG */
     #bodyBase {
       filter: url(#skinTintFilter);
     }
 
-    /* RIGHT SIDE ACTION BUTTONS */
-    .nav-buttons {
-      position: absolute;
-      right: 30px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      z-index: 5;
-    }
-
+    /* BASE ACTION BUTTON STYLES */
     .png-btn {
       background: rgba(255, 255, 255, 0.85);
       border: 3px solid #f48fb1;
@@ -260,6 +246,23 @@
     .png-btn:hover {
       transform: scale(1.08);
       background: white;
+    }
+
+    /* RIGHT SIDE CLOSET BUTTON */
+    .nav-buttons-right {
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+    }
+
+    /* LEFT BOTTOM CORNER SHOES BUTTON (40px FROM BOTTOM) */
+    .nav-buttons-left-bottom {
+      position: absolute;
+      left: 30px;
+      bottom: 40px;
+      z-index: 5;
     }
 
     /* =========================================================
@@ -437,11 +440,10 @@
       transform: scale(1.05);
     }
 
-    /* 6 Boxes Layout: 3 Columns x 2 Rows with Gap Between Top & Bottom */
     .shoe-grid-container {
       display: flex;
       flex-direction: column;
-      gap: 35px; /* Vertical gap between top row and bottom row */
+      gap: 35px;
       width: 70%;
       max-width: 750px;
     }
@@ -449,7 +451,7 @@
     .shoe-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px; /* Gap between the 3 boxes in each row */
+      gap: 20px;
     }
 
     .shoe-box {
@@ -545,12 +547,15 @@
         <div id="shoesLayer" class="avatar-layer"></div>
       </div>
 
-      <div class="nav-buttons">
+      <div class="nav-buttons-right">
         <button class="png-btn" onclick="openFullCloset()">
           <span>Closet ➔</span>
         </button>
+      </div>
+
+      <div class="nav-buttons-left-bottom">
         <button class="png-btn" onclick="openShoeRack()">
-          <span>Shoes ➔</span>
+          <span>➔ Shoes</span>
         </button>
       </div>
     </div>
