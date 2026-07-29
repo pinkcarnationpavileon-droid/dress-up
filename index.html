@@ -192,7 +192,6 @@
       border-color: #f06292;
     }
 
-    /* DROPDOWN SELECT STYLING FOR EYES, NOSE, LIPS */
     .feature-select {
       width: 100%;
       padding: 6px;
@@ -276,6 +275,14 @@
       position: absolute;
       left: 30px;
       bottom: 40px;
+      z-index: 5;
+    }
+
+    /* CUSTOM HAIR BUTTON POSITION (60px down, 35em to the right) */
+    .nav-button-hair {
+      position: absolute;
+      top: 60px;
+      left: 35em;
       z-index: 5;
     }
 
@@ -599,6 +606,12 @@
         <div id="shoesLayer" class="avatar-layer"></div>
       </div>
 
+      <div class="nav-button-hair">
+        <button class="png-btn" onclick="openHairModal()">
+          <span>Hair ➔</span>
+        </button>
+      </div>
+
       <div class="nav-buttons-right">
         <button class="png-btn" onclick="openFullCloset()">
           <span>Closet ➔</span>
@@ -724,6 +737,11 @@
 
     function closeShoeRack() {
       document.getElementById('shoeRack').classList.remove('open');
+    }
+
+    /* Hair Modal Placeholder */
+    function openHairModal() {
+      alert("Hair selection panel can be hooked up here!");
     }
 
     /* SVG Color Matrix Skin Tinting */
