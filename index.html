@@ -624,6 +624,17 @@
     .hair-png-btn:hover {
       transform: scale(1.1);
     }
+
+    /* Adjusted specific positioning for the two buttons inside the hair section */
+    .hair-png-btn.hair-btn-adjust {
+      position: relative;
+      left: -25px;
+    }
+
+    .hair-png-btn.acc-btn-adjust {
+      position: relative;
+      top: 15px;
+    }
   </style>
 </head>
 
@@ -811,10 +822,10 @@
 
       <div class="hair-workspace">
         <div class="hair-buttons-container">
-          <button class="hair-png-btn" onclick="selectHairCategory()">
+          <button class="hair-png-btn hair-btn-adjust" onclick="selectHairCategory()">
             <img src="YOUR_HAIR_BUTTON_PNG.png" alt="Hair Button">
           </button>
-          <button class="hair-png-btn" onclick="selectAccessoriesCategory()">
+          <button class="hair-png-btn acc-btn-adjust" onclick="selectAccessoriesCategory()">
             <img src="YOUR_ACC_BUTTON_PNG.png" alt="Accessories Button">
           </button>
         </div>
