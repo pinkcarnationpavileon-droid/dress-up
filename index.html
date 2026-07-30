@@ -328,14 +328,7 @@
     .nav-button-hair {
       position: absolute;
       top: calc(15em - 10px); 
-      left: calc(21em - 25px);
-      z-index: 5;
-    }
-
-    .nav-button-accessory {
-      position: absolute;
-      top: calc(15em - 10px + 15px);
-      left: calc(21em + 60px);
+      left: 21em;
       z-index: 5;
     }
 
@@ -554,62 +547,178 @@
       filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
     }
 
-    /* Roster Panels styled like Customization Box (top-left curtain style) */
-    .roster-curtain-container {
+    /* Hair & Accessories Section Slide-Up Curtain */
+    .hair-curtain {
       position: absolute;
-      left: 20px;
-      top: 0;
-      z-index: 15;
-      pointer-events: none;
-    }
-
-    .roster-box {
-      width: 280px;
-      padding: 20px;
-      background: rgba(255, 245, 247, 0.95);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-      border-radius: 0 0 20px 20px;
-      border: 3px solid #f48fb1;
-      border-top: none;
+      bottom: -100vh;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('https://nicegirlslumber.neocities.org/temphairandaccessory.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 -15px 35px rgba(0,0,0,0.5);
+      transition: bottom 0.7s cubic-bezier(0.77, 0, 0.175, 1);
+      z-index: 20;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      pointer-events: auto;
-      transform: translateY(-100%);
-      transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-      position: relative;
+      padding: 40px;
+      box-sizing: border-box;
     }
 
-    .roster-box.open {
-      transform: translateY(0);
+    .hair-curtain.open { bottom: 0; }
+
+    .hair-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #f06292;
+      color: white;
+      border: 2px solid white;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-family: inherit;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+      z-index: 25;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .hair-close-btn:hover {
+      background: #ec407a;
+      transform: scale(1.05);
+    }
+
+    .hair-workspace {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      padding-top: 50px;
+    }
+
+    .hair-buttons-container {
+      display: flex;
+      gap: 30px;
+    }
+
+    .hair-png-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.2s;
+    }
+
+    .hair-png-btn img {
+      width: 150px;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+    }
+
+    .hair-png-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Adjusted specific positioning for the two buttons inside the hair section */
+    .hair-png-btn.hair-btn-adjust {
+      position: relative;
+      left: -25px;
+    }
+
+    .hair-png-btn.acc-btn-adjust {
+      position: relative;
+      top: 15px;
+    }
+
+    /* Vertical Row Roster Panels */
+    .roster-panel {
+      position: absolute;
+      top: 0;
+      left: -100vw;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 240, 245, 0.95);
+      backdrop-filter: blur(8px);
+      transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    .roster-panel.open {
+      left: 0;
+    }
+
+    .roster-back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #f06292;
+      color: white;
+      border: 2px solid white;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-family: inherit;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+      z-index: 35;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .roster-back-btn:hover {
+      background: #ec407a;
+      transform: scale(1.05);
+    }
+
+    .roster-title {
+      color: #880e4f;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      margin-top: 10px;
     }
 
     .roster-scroll-container {
-      max-height: 60vh;
+      width: 320px;
+      max-height: 75vh;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      padding: 5px;
+      gap: 15px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 3px solid #f48fb1;
+      border-radius: 20px;
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
     }
 
     .roster-item {
       background: white;
       border: 2px solid #f48fb1;
-      border-radius: 10px;
-      height: 80px;
+      border-radius: 12px;
+      height: 90px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
+      transition: transform 0.2s, border-color 0.2s, background 0.2s;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
       flex-shrink: 0;
     }
 
     .roster-item:hover {
-      transform: scale(1.03);
+      transform: scale(1.05);
       border-color: #f06292;
+      background: #fff0f5;
     }
 
     .roster-item img {
@@ -711,58 +820,6 @@
       </div>
     </div>
 
-    <div class="roster-curtain-container" style="left: 315px;">
-      <div id="hairRosterBox" class="roster-box">
-        <div class="custom-pull-tab" onclick="toggleHairBox()" style="background: #f06292; border-color: #f48fb1;">
-          <span>HAIR</span>
-        </div>
-        <h2 style="margin: 0; color: #880e4f; text-align: center; font-size: 1.5rem;">Hair Selection</h2>
-        <div class="roster-scroll-container">
-          <div class="roster-item" onclick="equipHair('HAIR_1.png')"><img src="HAIR_THUMB_1.png" alt="Hair 1"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_2.png')"><img src="HAIR_THUMB_2.png" alt="Hair 2"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_3.png')"><img src="HAIR_THUMB_3.png" alt="Hair 3"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_4.png')"><img src="HAIR_THUMB_4.png" alt="Hair 4"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_5.png')"><img src="HAIR_THUMB_5.png" alt="Hair 5"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_6.png')"><img src="HAIR_THUMB_6.png" alt="Hair 6"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_7.png')"><img src="HAIR_THUMB_7.png" alt="Hair 7"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_8.png')"><img src="HAIR_THUMB_8.png" alt="Hair 8"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_9.png')"><img src="HAIR_THUMB_9.png" alt="Hair 9"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_10.png')"><img src="HAIR_THUMB_10.png" alt="Hair 10"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_11.png')"><img src="HAIR_THUMB_11.png" alt="Hair 11"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_12.png')"><img src="HAIR_THUMB_12.png" alt="Hair 12"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_13.png')"><img src="HAIR_THUMB_13.png" alt="Hair 13"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_14.png')"><img src="HAIR_THUMB_14.png" alt="Hair 14"></div>
-          <div class="roster-item" onclick="equipHair('HAIR_15.png')"><img src="HAIR_THUMB_15.png" alt="Hair 15"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="roster-curtain-container" style="left: 610px;">
-      <div id="accRosterBox" class="roster-box">
-        <div class="custom-pull-tab" onclick="toggleAccBox()" style="background: #f06292; border-color: #f48fb1; width: 130px;">
-          <span>ACCESSORY</span>
-        </div>
-        <h2 style="margin: 0; color: #880e4f; text-align: center; font-size: 1.5rem;">Accessory Selection</h2>
-        <div class="roster-scroll-container">
-          <div class="roster-item" onclick="equipAccessory('ACC_1.png')"><img src="ACC_THUMB_1.png" alt="Accessory 1"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_2.png')"><img src="ACC_THUMB_2.png" alt="Accessory 2"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_3.png')"><img src="ACC_THUMB_3.png" alt="Accessory 3"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_4.png')"><img src="ACC_THUMB_4.png" alt="Accessory 4"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_5.png')"><img src="ACC_THUMB_5.png" alt="Accessory 5"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_6.png')"><img src="ACC_THUMB_6.png" alt="Accessory 6"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_7.png')"><img src="ACC_THUMB_7.png" alt="Accessory 7"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_8.png')"><img src="ACC_THUMB_8.png" alt="Accessory 8"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_9.png')"><img src="ACC_THUMB_9.png" alt="Accessory 9"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_10.png')"><img src="ACC_THUMB_10.png" alt="Accessory 10"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_11.png')"><img src="ACC_THUMB_11.png" alt="Accessory 11"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_12.png')"><img src="ACC_THUMB_12.png" alt="Accessory 12"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_13.png')"><img src="ACC_THUMB_13.png" alt="Accessory 13"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_14.png')"><img src="ACC_THUMB_14.png" alt="Accessory 14"></div>
-          <div class="roster-item" onclick="equipAccessory('ACC_15.png')"><img src="ACC_THUMB_15.png" alt="Accessory 15"></div>
-        </div>
-      </div>
-    </div>
-
     <div class="avatar-stage">
       <div class="avatar-container">
         <div id="bodyBase" class="avatar-layer"></div>
@@ -777,30 +834,23 @@
       </div>
 
       <div class="nav-button-hair">
-        <button class="interactive-png-btn" onclick="toggleHairBox()">
+        <button class="interactive-png-btn" onclick="openHairModal()">
           <img src="https://nicegirlslumber.neocities.org/Arrow2.png" alt="Hair Button" class="btn-img">
-          <div class="btn-message" style="background-image: url('https://nicegirlslumber.neocities.org/commentstemp.png');">Change Hair</div>
-        </button>
-      </div>
-
-      <div class="nav-button-accessory">
-        <button class="interactive-png-btn" onclick="toggleAccBox()">
-          <img src="https://nicegirlslumber.neocities.org/Arrow2.png" alt="Accessory Button" class="btn-img">
-          <div class="btn-message" style="background-image: url('https://nicegirlslumber.neocities.org/commentstemp.png');">Change Accessory</div>
+          <div class="btn-message">Change Hair</div>
         </button>
       </div>
 
       <div class="nav-buttons-right">
         <button class="interactive-png-btn" onclick="openFullCloset()">
           <img src="https://nicegirlslumber.neocities.org/Arrow1.png" alt="Closet Button" class="btn-img">
-          <div class="btn-message" style="background-image: url('https://nicegirlslumber.neocities.org/commentstemp.png');">Open Closet</div>
+          <div class="btn-message">Open Closet</div>
         </button>
       </div>
 
       <div class="nav-buttons-left-bottom">
         <button class="interactive-png-btn" onclick="openShoeRack()">
           <img src="https://nicegirlslumber.neocities.org/Arrow11.png" alt="Shoes Button" class="btn-img">
-          <div class="btn-message" style="background-image: url('https://nicegirlslumber.neocities.org/commentstemp.png');">Shoe Rack</div>
+          <div class="btn-message">Shoe Rack</div>
         </button>
       </div>
     </div>
@@ -859,6 +909,65 @@
       </div>
     </div>
 
+    <div id="hairSection" class="hair-curtain">
+      <button class="hair-close-btn" onclick="closeHairModal()">Back to Avatar ➔</button>
+
+      <div class="hair-workspace">
+        <div class="hair-buttons-container">
+          <button class="hair-png-btn hair-btn-adjust" onclick="openHairRoster()">
+            <img src="YOUR_HAIR_BUTTON_PNG.png" alt="Hair Button">
+          </button>
+          <button class="hair-png-btn acc-btn-adjust" onclick="openAccRoster()">
+            <img src="YOUR_ACC_BUTTON_PNG.png" alt="Accessories Button">
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="hairRosterPanel" class="roster-panel">
+      <button class="roster-back-btn" onclick="closeHairRoster()">➔ Back</button>
+      <h2 class="roster-title">Hair Selection</h2>
+      <div class="roster-scroll-container">
+        <div class="roster-item" onclick="equipHair('HAIR_1.png')"><img src="HAIR_THUMB_1.png" alt="Hair 1"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_2.png')"><img src="HAIR_THUMB_2.png" alt="Hair 2"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_3.png')"><img src="HAIR_THUMB_3.png" alt="Hair 3"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_4.png')"><img src="HAIR_THUMB_4.png" alt="Hair 4"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_5.png')"><img src="HAIR_THUMB_5.png" alt="Hair 5"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_6.png')"><img src="HAIR_THUMB_6.png" alt="Hair 6"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_7.png')"><img src="HAIR_THUMB_7.png" alt="Hair 7"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_8.png')"><img src="HAIR_THUMB_8.png" alt="Hair 8"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_9.png')"><img src="HAIR_THUMB_9.png" alt="Hair 9"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_10.png')"><img src="HAIR_THUMB_10.png" alt="Hair 10"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_11.png')"><img src="HAIR_THUMB_11.png" alt="Hair 11"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_12.png')"><img src="HAIR_THUMB_12.png" alt="Hair 12"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_13.png')"><img src="HAIR_THUMB_13.png" alt="Hair 13"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_14.png')"><img src="HAIR_THUMB_14.png" alt="Hair 14"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_15.png')"><img src="HAIR_THUMB_15.png" alt="Hair 15"></div>
+      </div>
+    </div>
+
+    <div id="accRosterPanel" class="roster-panel">
+      <button class="roster-back-btn" onclick="closeAccRoster()">➔ Back</button>
+      <h2 class="roster-title">Accessories Selection</h2>
+      <div class="roster-scroll-container">
+        <div class="roster-item" onclick="equipAccessory('ACC_1.png')"><img src="ACC_THUMB_1.png" alt="Accessory 1"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_2.png')"><img src="ACC_THUMB_2.png" alt="Accessory 2"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_3.png')"><img src="ACC_THUMB_3.png" alt="Accessory 3"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_4.png')"><img src="ACC_THUMB_4.png" alt="Accessory 4"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_5.png')"><img src="ACC_THUMB_5.png" alt="Accessory 5"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_6.png')"><img src="ACC_THUMB_6.png" alt="Accessory 6"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_7.png')"><img src="ACC_THUMB_7.png" alt="Accessory 7"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_8.png')"><img src="ACC_THUMB_8.png" alt="Accessory 8"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_9.png')"><img src="ACC_THUMB_9.png" alt="Accessory 9"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_10.png')"><img src="ACC_THUMB_10.png" alt="Accessory 10"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_11.png')"><img src="ACC_THUMB_11.png" alt="Accessory 11"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_12.png')"><img src="ACC_THUMB_12.png" alt="Accessory 12"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_13.png')"><img src="ACC_THUMB_13.png" alt="Accessory 13"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_14.png')"><img src="ACC_THUMB_14.png" alt="Accessory 14"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_15.png')"><img src="ACC_THUMB_15.png" alt="Accessory 15"></div>
+      </div>
+    </div>
+
   </div>
 
   <svg style="display: none;">
@@ -911,14 +1020,6 @@
       document.getElementById('customBox').classList.toggle('open');
     }
 
-    function toggleHairBox() {
-      document.getElementById('hairRosterBox').classList.toggle('open');
-    }
-
-    function toggleAccBox() {
-      document.getElementById('accRosterBox').classList.toggle('open');
-    }
-
     function openFullCloset() {
       document.getElementById('fullCloset').classList.add('open');
     }
@@ -933,6 +1034,30 @@
 
     function closeShoeRack() {
       document.getElementById('shoeRack').classList.remove('open');
+    }
+
+    function openHairModal() {
+      document.getElementById('hairSection').classList.add('open');
+    }
+
+    function closeHairModal() {
+      document.getElementById('hairSection').classList.remove('open');
+    }
+
+    function openHairRoster() {
+      document.getElementById('hairRosterPanel').classList.add('open');
+    }
+
+    function closeHairRoster() {
+      document.getElementById('hairRosterPanel').classList.remove('open');
+    }
+
+    function openAccRoster() {
+      document.getElementById('accRosterPanel').classList.add('open');
+    }
+
+    function closeAccRoster() {
+      document.getElementById('accRosterPanel').classList.remove('open');
     }
 
     function equipHair(hairUrl) {
