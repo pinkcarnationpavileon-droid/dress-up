@@ -1,983 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>I stole some from my mothers closet btw</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
-  
-  <style>
-    * { box-sizing: border-box; }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>I stole some from my mothers closet btw</title>
+  <link rel="stylesheet" href="style-4.css">
+  <link rel="icon" type="image/jpeg" href="https://nicegirlslumber.neocities.org/newfavicon.png" alt="myface">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 
-    body {
-      font-family: 'Gamja Flower', cursive, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      background-image: url('https://nicegirlslumber.neocities.org/tempdressupbg.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      user-select: none;
-    }
-
-    .game-container {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-
-    .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(5px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      transition: opacity 0.3s ease;
-    }
-
-    .popup-overlay.hidden { display: none !important; }
-
-    .popup-card {
-      position: relative;
-      background: #fff0f5;
-      border: 4px solid #f48fb1;
-      border-radius: 20px;
-      padding: 25px 30px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      max-width: 500px;
-      width: 90%;
-    }
-
-    .popup-card h2 {
-      margin: 0 0 10px 0;
-      color: #880e4f;
-      font-size: 2.2rem;
-    }
-
-    .popup-card p {
-      color: #5c002e;
-      font-size: 1.3rem;
-      margin-bottom: 20px;
-    }
-
-    .body-options-grid {
-      display: flex;
-      justify-content: space-around;
-      gap: 15px;
-    }
-
-    .body-card-option {
-      flex: 1;
-      background: white;
-      border: 3px solid #f48fb1;
-      border-radius: 15px;
-      padding: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-
-    .body-card-option img,
-    .body-card-option span {
-      pointer-events: none;
-    }
-
-    .body-card-option:hover {
-      transform: scale(1.08);
-      border-color: #f06292;
-    }
-
-    .body-card-option img {
-      width: 100%;
-      height: 140px;
-      object-fit: contain;
-    }
-
-    .body-card-option span {
-      display: block;
-      margin-top: 8px;
-      font-size: 1.4rem;
-      color: #880e4f;
-      font-weight: bold;
-    }
-
-    .customization-curtain-container {
-      position: absolute;
-      left: 20px;
-      top: 0;
-      z-index: 10;
-      pointer-events: none;
-    }
-
-    .customization-box {
-      width: 280px;
-      padding: 20px;
-      background: rgba(255, 245, 247, 0.95);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-      border-radius: 0 0 20px 20px;
-      border: 3px solid #f48fb1;
-      border-top: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      pointer-events: auto;
-      transform: translateY(-100%);
-      transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-      position: relative;
-    }
-
-    .customization-box.open { transform: translateY(0); }
-
-    .custom-pull-tab {
-      position: absolute;
-      bottom: -45px;
-      left: 15px;
-      width: 110px;
-      height: 45px;
-      background: #f06292;
-      border-radius: 0 0 16px 16px;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      pointer-events: auto;
-      color: white;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border: 3px solid #f48fb1;
-      border-top: none;
-    }
-
-    .body-type-controls {
-      display: flex;
-      gap: 5px;
-      justify-content: space-between;
-    }
-
-    .customization-box button,
-    .customization-box .body-btn {
-      color: pink;
-      text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
-      font-weight: bold;
-    }
-
-    .body-btn {
-      flex: 1;
-      padding: 6px;
-      background: #fff;
-      border: 2px solid #f48fb1;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-
-    .body-btn.active {
-      background: #f06292;
-      color: pink;
-      text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
-      border-color: #f06292;
-    }
-
-    .feature-select {
-      width: 100%;
-      padding: 6px;
-      border-radius: 8px;
-      border: 2px solid #f48fb1;
-      font-family: inherit;
-      font-size: 1.1rem;
-      background: white;
-      color: pink;
-      text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .avatar-stage {
-      flex: 1;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .avatar-container {
-      position: relative;
-      width: 390px;
-      height: 610px;
-    }
-
-    .avatar-layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      pointer-events: none;
-    }
-
-    #bodyBase {
-      filter: url(#skinTintFilter);
-    }
-
-    .interactive-png-btn {
-      position: relative;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      display: inline-block;
-    }
-
-    .interactive-png-btn img.btn-img {
-      display: block;
-      width: 80px; 
-      height: auto;
-      transition: transform 0.2s;
-    }
-
-    .nav-buttons-right img.btn-img {
-      width: 110px; 
-    }
-
-    .nav-buttons-left-bottom img.btn-img {
-      width: 116px; 
-    }
-
-    .interactive-png-btn:hover img.btn-img {
-      transform: scale(1.1);
-    }
-
-    .btn-message {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%) scaleY(0);
-      transform-origin: top;
-      background-image: url('https://nicegirlslumber.neocities.org/commentstemp.png');
-      background-size: cover;
-      background-position: center;
-      color: #880e4f;
-      font-family: 'Gamja Flower', cursive, sans-serif;
-      font-size: 1.1rem;
-      font-weight: bold;
-      padding: 12px 16px;
-      white-space: nowrap;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      pointer-events: none;
-      opacity: 0;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
-      z-index: 10;
-    }
-
-    .nav-button-hair .btn-message {
-      top: 100%;
-      margin-top: 8px;
-      transform-origin: top;
-    }
-    .nav-button-hair .interactive-png-btn:hover .btn-message {
-      transform: translateX(-50%) scaleY(1);
-      opacity: 1;
-    }
-
-    .nav-buttons-right .btn-message,
-    .nav-buttons-left-bottom .btn-message {
-      bottom: 100%;
-      margin-bottom: 8px;
-      transform-origin: bottom;
-    }
-    .nav-buttons-right .interactive-png-btn:hover .btn-message,
-    .nav-buttons-left-bottom .interactive-png-btn:hover .btn-message {
-      transform: translateX(-50%) scaleY(1);
-      opacity: 1;
-    }
-
-    .nav-buttons-right {
-      position: absolute;
-      right: 30px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 5;
-    }
-
-    .nav-buttons-left-bottom {
-      position: absolute;
-      left: 30px;
-      bottom: 65px; 
-      z-index: 5;
-    }
-
-    .nav-button-hair {
-      position: absolute;
-      top: calc(15em - 10px); 
-      left: 21em;
-      z-index: 5;
-    }
-
-    .full-closet-curtain {
-      position: absolute;
-      top: 0;
-      right: -100vw;
-      width: 100vw;
-      height: 100vh;
-      background-image: url('https://nicegirlslumber.neocities.org/tempcloset.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      box-shadow: -15px 0 35px rgba(0,0,0,0.5);
-      transition: right 0.7s cubic-bezier(0.77, 0, 0.175, 1);
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      padding: 30px;
-      box-sizing: border-box;
-    }
-
-    .full-closet-curtain.open { right: 0; }
-
-    .closet-close-btn {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background: #f06292;
-      color: white;
-      border: 2px solid white;
-      padding: 10px 22px;
-      border-radius: 25px;
-      font-family: inherit;
-      font-size: 1.3rem;
-      cursor: pointer;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
-      z-index: 25;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .closet-close-btn:hover {
-      background: #ec407a;
-      transform: scale(1.05);
-    }
-
-    .closet-workspace {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding-top: 50px;
-    }
-
-    .shelves-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 60%;
-      margin: 0 auto;
-      position: relative;
-      top: 5px;
-      left: 50px;
-    }
-
-    .pants-row {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(4px);
-      padding: 8px;
-      border-radius: 12px;
-      border-bottom: 3px solid rgba(0,0,0,0.15);
-      gap: 15px;
-    }
-
-    .pants-item {
-      width: 75px;
-      height: 65px;
-      cursor: pointer;
-      transition: transform 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .pants-item img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    }
-
-    .pants-item:hover { transform: scale(1.2) translateY(-4px); }
-
-    .rack-container {
-      width: 90%;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(4px);
-      padding: 15px 20px;
-      border-radius: 16px;
-      border-top: 4px solid #8d6e63;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      overflow-x: auto;
-      gap: 15px;
-    }
-
-    .shirt-item {
-      width: 70px;
-      height: 110px;
-      cursor: pointer;
-      transition: transform 0.2s;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .shirt-item img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
-    }
-
-    .shirt-item:hover { transform: scale(1.18) translateY(-6px); }
-
-    .shoe-rack-curtain {
-      position: absolute;
-      top: 0;
-      left: -100vw;
-      width: 100vw;
-      height: 100vh;
-      background-image: url('https://nicegirlslumber.neocities.org/shoestemp.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      box-shadow: 15px 0 35px rgba(0,0,0,0.5);
-      transition: left 0.7s cubic-bezier(0.77, 0, 0.175, 1);
-      z-index: 20;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-      box-sizing: border-box;
-    }
-
-    .shoe-rack-curtain.open { left: 0; }
-
-    .shoerack-close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #f06292;
-      color: white;
-      border: 2px solid white;
-      padding: 10px 22px;
-      border-radius: 25px;
-      font-family: inherit;
-      font-size: 1.3rem;
-      cursor: pointer;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
-      z-index: 25;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .shoerack-close-btn:hover {
-      background: #ec407a;
-      transform: scale(1.05);
-    }
-
-    .shoe-grid-container {
-      display: flex;
-      flex-direction: column;
-      gap: 35px;
-      width: 70%;
-      max-width: 750px;
-    }
-
-    .shoe-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .shoe-box {
-      background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(5px);
-      border: 3px solid rgba(244, 143, 177, 0.8);
-      border-radius: 16px;
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    .shoe-box:hover {
-      transform: scale(1.06);
-      background: rgba(255, 255, 255, 0.7);
-    }
-
-    .shoe-box img {
-      max-width: 85%;
-      max-height: 85%;
-      object-fit: contain;
-      filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
-    }
-
-    /* Hair & Accessories Section Slide-Up Curtain */
-    .hair-curtain {
-      position: absolute;
-      bottom: -100vh;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-image: url('https://nicegirlslumber.neocities.org/temphairandaccessory.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      box-shadow: 0 -15px 35px rgba(0,0,0,0.5);
-      transition: bottom 0.7s cubic-bezier(0.77, 0, 0.175, 1);
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      padding: 40px;
-      box-sizing: border-box;
-    }
-
-    .hair-curtain.open { bottom: 0; }
-
-    .hair-close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #f06292;
-      color: white;
-      border: 2px solid white;
-      padding: 10px 22px;
-      border-radius: 25px;
-      font-family: inherit;
-      font-size: 1.3rem;
-      cursor: pointer;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
-      z-index: 25;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .hair-close-btn:hover {
-      background: #ec407a;
-      transform: scale(1.05);
-    }
-
-    .hair-workspace {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 30px;
-      padding-top: 50px;
-    }
-
-    .hair-buttons-container {
-      display: flex;
-      gap: 30px;
-    }
-
-    .hair-png-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      transition: transform 0.2s;
-    }
-
-    .hair-png-btn img {
-      width: 150px;
-      height: auto;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
-    }
-
-    .hair-png-btn:hover {
-      transform: scale(1.1);
-    }
-
-    /* Adjusted specific positioning for the two buttons inside the hair section */
-    .hair-png-btn.hair-btn-adjust {
-      position: relative;
-      left: -25px;
-    }
-
-    .hair-png-btn.acc-btn-adjust {
-      position: relative;
-      top: 15px;
-    }
-
-    /* Vertical Row Roster Panels */
-    .roster-panel {
-      position: absolute;
-      top: 0;
-      left: -100vw;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(255, 240, 245, 0.95);
-      backdrop-filter: blur(8px);
-      transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-      z-index: 30;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px;
-      box-sizing: border-box;
-    }
-
-    .roster-panel.open {
-      left: 0;
-    }
-
-    .roster-back-btn {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background: #f06292;
-      color: white;
-      border: 2px solid white;
-      padding: 10px 22px;
-      border-radius: 25px;
-      font-family: inherit;
-      font-size: 1.3rem;
-      cursor: pointer;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
-      z-index: 35;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .roster-back-btn:hover {
-      background: #ec407a;
-      transform: scale(1.05);
-    }
-
-    .roster-title {
-      color: #880e4f;
-      font-size: 2.2rem;
-      margin-bottom: 20px;
-      margin-top: 10px;
-    }
-
-    .roster-scroll-container {
-      width: 320px;
-      max-height: 75vh;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.5);
-      border: 3px solid #f48fb1;
-      border-radius: 20px;
-      box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .roster-item {
-      background: white;
-      border: 2px solid #f48fb1;
-      border-radius: 12px;
-      height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s, background 0.2s;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      flex-shrink: 0;
-    }
-
-    .roster-item:hover {
-      transform: scale(1.05);
-      border-color: #f06292;
-      background: #fff0f5;
-    }
-
-    .roster-item img {
-      max-width: 80%;
-      max-height: 80%;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-    }
-  </style>
 </head>
 
 <body>
 
-  <div id="bodyPopup" class="popup-overlay">
-    <div class="popup-card">
-      <button onclick="document.getElementById('bodyPopup').classList.add('hidden')" 
-              style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;">
-        ✕
-      </button>
+  <div id="bodyPopup" class="popup-overlay">
+    <div class="popup-card">
+      <button onclick="document.getElementById('bodyPopup').classList.add('hidden')" 
+              style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;">
+        ✕
+      </button>
 
-      <h2>Welcome to Dress-Up Studio!</h2>
-      <p>Which body type suits you best?</p>
-       
-      <div class="body-options-grid">
-        <div class="body-card-option" onclick="selectInitialBody('a')">
-          <img src="https://nicegirlslumber.neocities.org/bodyA.png" alt="Body A">
-          <span>Body A</span>
-        </div>
-        <div class="body-card-option" onclick="selectInitialBody('b')">
-          <img src="https://nicegirlslumber.neocities.org/bodyB.png" alt="Body B">
-          <span>Body B</span>
-        </div>
-        <div class="body-card-option" onclick="selectInitialBody('c')">
-          <img src="https://nicegirlslumber.neocities.org/bodyC.png" alt="Body C">
-          <span>Body C</span>
-        </div>
-      </div>
-    </div>
-  </div>
+      <h2>Welcome to my closet!</h2>
+      <p>...</p>
+       
+      <div class="body-options-grid">
+        <div class="body-card-option" onclick="selectInitialBody('a')">
+          <img src="https://nicegirlslumber.neocities.org/bodyA.png" alt="Body A">
+          <span></span>
+        </div>
+        <div class="body-card-option" onclick="selectInitialBody('b')">
+          <img src="https://nicegirlslumber.neocities.org/bodyB.png" alt="Body B">
+          <span></span>
+        </div>
+        <div class="body-card-option" onclick="selectInitialBody('c')">
+          <img src="https://nicegirlslumber.neocities.org/bodyC.png" alt="Body C">
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <div class="game-container">
-    
-    <div class="customization-curtain-container">
-      <div id="customBox" class="customization-box">
-        
-        <div class="custom-pull-tab" onclick="toggleCustomBox()">
-          <span>PULL</span>
-        </div>
+  <div class="game-container">
+    
+    <div class="customization-curtain-container">
+      <div id="customBox" class="customization-box">
+        
+        <div class="custom-pull-tab" onclick="toggleCustomBox()">
+          <span>PULL</span>
+        </div>
 
-        <h2 style="margin: 0; color: #880e4f; text-align: center;">Avatar Styling</h2>
-        
-        <div>
-          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Body Type:</label>
-          <div class="body-type-controls" style="margin-top: 3px;">
-            <button class="body-btn active" onclick="setBodyType('a')" id="btnBodyA">A</button>
-            <button class="body-btn" onclick="setBodyType('b')" id="btnBodyB">B</button>
-            <button class="body-btn" onclick="setBodyType('c')" id="btnBodyC">C</button>
-          </div>
-        </div>
+        <h2 style="margin: 0; color: #880e4f; text-align: center;"> Styling</h2>
+        
+        <div>
+          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;"> hii:</label>
+          <div class="body-type-controls" style="margin-top: 3px;">
+            <button class="body-btn active" onclick="setBodyType('a')" id="btnBodyA">.</button>
+            <button class="body-btn" onclick="setBodyType('b')" id="btnBodyB">.</button>
+            <button class="body-btn" onclick="setBodyType('c')" id="btnBodyC">.</button>
+          </div>
+        </div>
 
-        <div>
-          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Skin Tint:</label>
-          <input type="color" id="skinColor" value="#ffffff" oninput="updateSkinColor(this.value)" style="width:100%; height:30px; cursor:pointer; margin-top:3px;">
-        </div>
+        <div>
+          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Skin Tint:</label>
+          <input type="color" id="skinColor" value="#ffffff" oninput="updateSkinColor(this.value)" style="width:100%; height:30px; cursor:pointer; margin-top:3px;">
+        </div>
 
-        <div>
-          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Eyes:</label>
-          <select class="feature-select" onchange="equipEyes(this.value)" style="margin-top:3px;">
-            <option value="">None</option>
-            <option value="YOUR_EYES_1.png">Eye Style 1</option>
-            <option value="YOUR_EYES_2.png">Eye Style 2</option>
-            <option value="YOUR_EYES_3.png">Eye Style 3</option>
-            <option value="YOUR_EYES_4.png">Eye Style 4</option>
-          </select>
-        </div>
+        <div>
+          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Eyes:</label>
+          <select class="feature-select" onchange="equipEyes(this.value)" style="margin-top:3px;">
+            <option value="">None</option>
+            <option value="YOUR_EYES_1.png">Eye Style 1</option>
+            <option value="YOUR_EYES_2.png">Eye Style 2</option>
+            <option value="YOUR_EYES_3.png">Eye Style 3</option>
+            <option value="YOUR_EYES_4.png">Eye Style 4</option>
+          </select>
+        </div>
 
-        <div>
-          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Nose:</label>
-          <select class="feature-select" onchange="equipNose(this.value)" style="margin-top:3px;">
-            <option value="">None</option>
-            <option value="YOUR_NOSE_1.png">Nose Style 1</option>
-            <option value="YOUR_NOSE_2.png">Nose Style 2</option>
-            <option value="YOUR_NOSE_3.png">Nose Style 3</option>
-            <option value="YOUR_NOSE_4.png">Nose Style 4</option>
-          </select>
-        </div>
+        <div>
+          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Nose:</label>
+          <select class="feature-select" onchange="equipNose(this.value)" style="margin-top:3px;">
+            <option value="">None</option>
+            <option value="YOUR_NOSE_1.png">Nose Style 1</option>
+            <option value="YOUR_NOSE_2.png">Nose Style 2</option>
+            <option value="YOUR_NOSE_3.png">Nose Style 3</option>
+            <option value="YOUR_NOSE_4.png">Nose Style 4</option>
+          </select>
+        </div>
 
-        <div>
-          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Lips:</label>
-          <select class="feature-select" onchange="equipLips(this.value)" style="margin-top:3px;">
-            <option value="">None</option>
-            <option value="YOUR_LIPS_1.png">Lip Style 1</option>
-            <option value="YOUR_LIPS_2.png">Lip Style 2</option>
-            <option value="YOUR_LIPS_3.png">Lip Style 3</option>
-            <option value="YOUR_LIPS_4.png">Lip Style 4</option>
-          </select>
-        </div>
+        <div>
+          <label style="color: pink; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; font-weight: bold;">Lips:</label>
+          <select class="feature-select" onchange="equipLips(this.value)" style="margin-top:3px;">
+            <option value="">None</option>
+            <option value="YOUR_LIPS_1.png">Lip Style 1</option>
+            <option value="YOUR_LIPS_2.png">Lip Style 2</option>
+            <option value="YOUR_LIPS_3.png">Lip Style 3</option>
+            <option value="YOUR_LIPS_4.png">Lip Style 4</option>
+          </select>
+        </div>
 
-      </div>
-    </div>
+      </div>
+    </div>
 
-    <div class="avatar-stage">
-      <div class="avatar-container">
-        <div id="bodyBase" class="avatar-layer"></div>
+    <div class="avatar-stage">
+      <div class="avatar-container">
+        <div id="bodyBase" class="avatar-layer"></div>
 
-        <div id="eyesLayer" class="avatar-layer"></div>
-        <div id="noseLayer" class="avatar-layer"></div>
-        <div id="lipsLayer" class="avatar-layer"></div>
+        <div id="eyesLayer" class="avatar-layer"></div>
+        <div id="noseLayer" class="avatar-layer"></div>
+        <div id="lipsLayer" class="avatar-layer"></div>
 
-        <div id="pantsLayer" class="avatar-layer"></div>
-        <div id="shirtLayer" class="avatar-layer"></div>
-        <div id="shoesLayer" class="avatar-layer"></div>
-      </div>
+        <div id="pantsLayer" class="avatar-layer"></div>
+        <div id="shirtLayer" class="avatar-layer"></div>
+        <div id="shoesLayer" class="avatar-layer"></div>
+      </div>
 
-      <div class="nav-button-hair">
-        <button class="interactive-png-btn" onclick="openHairModal()">
-          <img src="https://nicegirlslumber.neocities.org/Arrow2.png" alt="Hair Button" class="btn-img">
-          <div class="btn-message">Change Hair</div>
-        </button>
-      </div>
+      <div class="nav-button-hair">
+        <button class="interactive-png-btn" onclick="openHairModal()">
+          <img src="https://nicegirlslumber.neocities.org/Arrow2.png" alt="Hair Button" class="btn-img">
+          <div class="btn-message">Change Hair</div>
+        </button>
+      </div>
 
-      <div class="nav-buttons-right">
-        <button class="interactive-png-btn" onclick="openFullCloset()">
-          <img src="https://nicegirlslumber.neocities.org/Arrow1.png" alt="Closet Button" class="btn-img">
-          <div class="btn-message">Open Closet</div>
-        </button>
-      </div>
+      <div class="nav-buttons-right">
+        <button class="interactive-png-btn" onclick="openFullCloset()">
+          <img src="https://nicegirlslumber.neocities.org/Arrow1.png" alt="Closet Button" class="btn-img">
+          <div class="btn-message">Open Closet</div>
+        </button>
+      </div>
 
-      <div class="nav-buttons-left-bottom">
-        <button class="interactive-png-btn" onclick="openShoeRack()">
-          <img src="https://nicegirlslumber.neocities.org/Arrow11.png" alt="Shoes Button" class="btn-img">
-          <div class="btn-message">Shoe Rack</div>
-        </button>
-      </div>
-    </div>
+      <div class="nav-buttons-left-bottom">
+        <button class="interactive-png-btn" onclick="openShoeRack()">
+          <img src="https://nicegirlslumber.neocities.org/Arrow11.png" alt="Shoes Button" class="btn-img">
+          <div class="btn-message">Shoe Rack</div>
+        </button>
+      </div>
+    </div>
 
-    <div id="fullCloset" class="full-closet-curtain">
-      <button class="closet-close-btn" onclick="closeFullCloset()">➔ Back to Avatar</button>
-      
-      <div class="closet-workspace">
-        <div class="shelves-container">
-          <div class="pants-row">
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_1.png')"><img src="YOUR_PANTS_FOLDED_1.png" alt="Pants 1"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_2.png')"><img src="YOUR_PANTS_FOLDED_2.png" alt="Pants 2"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_3.png')"><img src="YOUR_PANTS_FOLDED_3.png" alt="Pants 3"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_4.png')"><img src="YOUR_PANTS_FOLDED_4.png" alt="Pants 4"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_5.png')"><img src="YOUR_PANTS_FOLDED_5.png" alt="Pants 5"></div>
-          </div>
-          <div class="pants-row">
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_6.png')"><img src="YOUR_PANTS_FOLDED_6.png" alt="Pants 6"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_7.png')"><img src="YOUR_PANTS_FOLDED_7.png" alt="Pants 7"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_8.png')"><img src="YOUR_PANTS_FOLDED_8.png" alt="Pants 8"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_9.png')"><img src="YOUR_PANTS_FOLDED_9.png" alt="Pants 9"></div>
-            <div class="pants-item" onclick="equipPants('YOUR_PANTS_10.png')"><img src="YOUR_PANTS_FOLDED_10.png" alt="Pants 10"></div>
-          </div>
-        </div>
+    <div id="fullCloset" class="full-closet-curtain">
+      <button class="closet-close-btn" onclick="closeFullCloset()">lets go</button>
+      
+      <div class="closet-workspace">
+        <div class="shelves-container">
+          <div class="pants-row">
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_1.png')"><img src="YOUR_PANTS_FOLDED_1.png" alt="Pants 1"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_2.png')"><img src="YOUR_PANTS_FOLDED_2.png" alt="Pants 2"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_3.png')"><img src="YOUR_PANTS_FOLDED_3.png" alt="Pants 3"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_4.png')"><img src="YOUR_PANTS_FOLDED_4.png" alt="Pants 4"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_5.png')"><img src="YOUR_PANTS_FOLDED_5.png" alt="Pants 5"></div>
+          </div>
+          <div class="pants-row">
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_6.png')"><img src="YOUR_PANTS_FOLDED_6.png" alt="Pants 6"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_7.png')"><img src="YOUR_PANTS_FOLDED_7.png" alt="Pants 7"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_8.png')"><img src="YOUR_PANTS_FOLDED_8.png" alt="Pants 8"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_9.png')"><img src="YOUR_PANTS_FOLDED_9.png" alt="Pants 9"></div>
+            <div class="pants-item" onclick="equipPants('YOUR_PANTS_10.png')"><img src="YOUR_PANTS_FOLDED_10.png" alt="Pants 10"></div>
+          </div>
+        </div>
 
-        <div class="rack-container">
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_1.png')"><img src="YOUR_SHIRT_HANGING_1.png" alt="Shirt 1"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_2.png')"><img src="YOUR_SHIRT_HANGING_2.png" alt="Shirt 2"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_3.png')"><img src="YOUR_SHIRT_HANGING_3.png" alt="Shirt 3"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_4.png')"><img src="YOUR_SHIRT_HANGING_4.png" alt="Shirt 4"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_5.png')"><img src="YOUR_SHIRT_HANGING_5.png" alt="Shirt 5"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_6.png')"><img src="YOUR_SHIRT_HANGING_6.png" alt="Shirt 6"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_7.png')"><img src="YOUR_SHIRT_HANGING_7.png" alt="Shirt 7"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_8.png')"><img src="YOUR_SHIRT_HANGING_8.png" alt="Shirt 8"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_9.png')"><img src="YOUR_SHIRT_HANGING_9.png" alt="Shirt 9"></div>
-          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_10.png')"><img src="YOUR_SHIRT_HANGING_10.png" alt="Shirt 10"></div>
-        </div>
-      </div>
-    </div>
+        <div class="rack-container">
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_1.png')"><img src="YOUR_SHIRT_HANGING_1.png" alt="Shirt 1"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_2.png')"><img src="YOUR_SHIRT_HANGING_2.png" alt="Shirt 2"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_3.png')"><img src="YOUR_SHIRT_HANGING_3.png" alt="Shirt 3"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_4.png')"><img src="YOUR_SHIRT_HANGING_4.png" alt="Shirt 4"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_5.png')"><img src="YOUR_SHIRT_HANGING_5.png" alt="Shirt 5"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_6.png')"><img src="YOUR_SHIRT_HANGING_6.png" alt="Shirt 6"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_7.png')"><img src="YOUR_SHIRT_HANGING_7.png" alt="Shirt 7"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_8.png')"><img src="YOUR_SHIRT_HANGING_8.png" alt="Shirt 8"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_9.png')"><img src="YOUR_SHIRT_HANGING_9.png" alt="Shirt 9"></div>
+          <div class="shirt-item" onclick="equipShirt('YOUR_SHIRT_10.png')"><img src="YOUR_SHIRT_HANGING_10.png" alt="Shirt 10"></div>
+        </div>
+      </div>
+    </div>
 
-    <div id="shoeRack" class="shoe-rack-curtain">
-      <button class="shoerack-close-btn" onclick="closeShoeRack()">Back to Avatar ➔</button>
+    <div id="shoeRack" class="shoe-rack-curtain">
+      <button class="shoerack-close-btn" onclick="closeShoeRack()">lets go</button>
 
-      <div class="shoe-grid-container">
-        <div class="shoe-row">
-          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_1.png')"><img src="YOUR_SHOES_THUMB_1.png" alt="Shoes 1"></div>
-          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_2.png')"><img src="YOUR_SHOES_THUMB_2.png" alt="Shoes 2"></div>
-          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_3.png')"><img src="YOUR_SHOES_THUMB_3.png" alt="Shoes 3"></div>
-        </div>
+      <div class="shoe-grid-container">
+        <div class="shoe-row">
+          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_1.png')"><img src="YOUR_SHOES_THUMB_1.png" alt="Shoes 1"></div>
+          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_2.png')"><img src="YOUR_SHOES_THUMB_2.png" alt="Shoes 2"></div>
+          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_3.png')"><img src="YOUR_SHOES_THUMB_3.png" alt="Shoes 3"></div>
+        </div>
 
-        <div class="shoe-row">
-          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_4.png')"><img src="YOUR_SHOES_THUMB_4.png" alt="Shoes 4"></div>
-          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_5.png')"><img src="YOUR_SHOES_THUMB_5.png" alt="Shoes 5"></div>
-          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_6.png')"><img src="YOUR_SHOES_THUMB_6.png" alt="Shoes 6"></div>
-        </div>
-      </div>
-    </div>
+        <div class="shoe-row">
+          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_4.png')"><img src="YOUR_SHOES_THUMB_4.png" alt="Shoes 4"></div>
+          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_5.png')"><img src="YOUR_SHOES_THUMB_5.png" alt="Shoes 5"></div>
+          <div class="shoe-box" onclick="equipShoes('YOUR_SHOES_6.png')"><img src="YOUR_SHOES_THUMB_6.png" alt="Shoes 6"></div>
+        </div>
+      </div>
+    </div>
 
-    <div id="hairSection" class="hair-curtain">
-      <button class="hair-close-btn" onclick="closeHairModal()">Back to Avatar ➔</button>
+    <div id="hairSection" class="hair-curtain">
+      <button class="hair-close-btn" onclick="closeHairModal()">Blahblahblue</button>
 
-      <div class="hair-workspace">
-        <div class="hair-buttons-container">
-          <button class="hair-png-btn hair-btn-adjust" onclick="openHairRoster()">
-            <img src="YOUR_HAIR_BUTTON_PNG.png" alt="Hair Button">
-          </button>
-          <button class="hair-png-btn acc-btn-adjust" onclick="openAccRoster()">
-            <img src="YOUR_ACC_BUTTON_PNG.png" alt="Accessories Button">
-          </button>
-        </div>
-      </div>
-    </div>
+      <div class="hair-workspace">
+        <div class="hair-buttons-container">
+          <button class="hair-png-btn hair-btn-adjust" onclick="openHairRoster()">
+            <img src="YOUR_HAIR_BUTTON_PNG.png" alt="Hair Button">
+          </button>
+          <button class="hair-png-btn acc-btn-adjust" onclick="openAccRoster()">
+            <img src="YOUR_ACC_BUTTON_PNG.png" alt="Accessories Button">
+          </button>
+        </div>
+      </div>
+    </div>
 
-    <div id="hairRosterPanel" class="roster-panel">
-      <button class="roster-back-btn" onclick="closeHairRoster()">➔ Back</button>
-      <h2 class="roster-title">Hair Selection</h2>
-      <div class="roster-scroll-container">
-        <div class="roster-item" onclick="equipHair('HAIR_1.png')"><img src="HAIR_THUMB_1.png" alt="Hair 1"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_2.png')"><img src="HAIR_THUMB_2.png" alt="Hair 2"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_3.png')"><img src="HAIR_THUMB_3.png" alt="Hair 3"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_4.png')"><img src="HAIR_THUMB_4.png" alt="Hair 4"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_5.png')"><img src="HAIR_THUMB_5.png" alt="Hair 5"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_6.png')"><img src="HAIR_THUMB_6.png" alt="Hair 6"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_7.png')"><img src="HAIR_THUMB_7.png" alt="Hair 7"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_8.png')"><img src="HAIR_THUMB_8.png" alt="Hair 8"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_9.png')"><img src="HAIR_THUMB_9.png" alt="Hair 9"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_10.png')"><img src="HAIR_THUMB_10.png" alt="Hair 10"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_11.png')"><img src="HAIR_THUMB_11.png" alt="Hair 11"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_12.png')"><img src="HAIR_THUMB_12.png" alt="Hair 12"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_13.png')"><img src="HAIR_THUMB_13.png" alt="Hair 13"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_14.png')"><img src="HAIR_THUMB_14.png" alt="Hair 14"></div>
-        <div class="roster-item" onclick="equipHair('HAIR_15.png')"><img src="HAIR_THUMB_15.png" alt="Hair 15"></div>
-      </div>
-    </div>
+    <div id="hairRosterPanel" class="roster-panel">
+      <button class="roster-back-btn" onclick="closeHairRoster()">hiii</button>
+      <h2 class="roster-title">Hair </h2>
+      <div class="roster-scroll-container">
+        <div class="roster-item" onclick="equipHair('HAIR_1.png')"><img src="HAIR_THUMB_1.png" alt="Hair 1"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_2.png')"><img src="HAIR_THUMB_2.png" alt="Hair 2"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_3.png')"><img src="HAIR_THUMB_3.png" alt="Hair 3"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_4.png')"><img src="HAIR_THUMB_4.png" alt="Hair 4"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_5.png')"><img src="HAIR_THUMB_5.png" alt="Hair 5"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_6.png')"><img src="HAIR_THUMB_6.png" alt="Hair 6"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_7.png')"><img src="HAIR_THUMB_7.png" alt="Hair 7"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_8.png')"><img src="HAIR_THUMB_8.png" alt="Hair 8"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_9.png')"><img src="HAIR_THUMB_9.png" alt="Hair 9"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_10.png')"><img src="HAIR_THUMB_10.png" alt="Hair 10"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_11.png')"><img src="HAIR_THUMB_11.png" alt="Hair 11"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_12.png')"><img src="HAIR_THUMB_12.png" alt="Hair 12"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_13.png')"><img src="HAIR_THUMB_13.png" alt="Hair 13"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_14.png')"><img src="HAIR_THUMB_14.png" alt="Hair 14"></div>
+        <div class="roster-item" onclick="equipHair('HAIR_15.png')"><img src="HAIR_THUMB_15.png" alt="Hair 15"></div>
+      </div>
+    </div>
 
-    <div id="accRosterPanel" class="roster-panel">
-      <button class="roster-back-btn" onclick="closeAccRoster()">➔ Back</button>
-      <h2 class="roster-title">Accessories Selection</h2>
-      <div class="roster-scroll-container">
-        <div class="roster-item" onclick="equipAccessory('ACC_1.png')"><img src="ACC_THUMB_1.png" alt="Accessory 1"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_2.png')"><img src="ACC_THUMB_2.png" alt="Accessory 2"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_3.png')"><img src="ACC_THUMB_3.png" alt="Accessory 3"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_4.png')"><img src="ACC_THUMB_4.png" alt="Accessory 4"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_5.png')"><img src="ACC_THUMB_5.png" alt="Accessory 5"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_6.png')"><img src="ACC_THUMB_6.png" alt="Accessory 6"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_7.png')"><img src="ACC_THUMB_7.png" alt="Accessory 7"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_8.png')"><img src="ACC_THUMB_8.png" alt="Accessory 8"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_9.png')"><img src="ACC_THUMB_9.png" alt="Accessory 9"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_10.png')"><img src="ACC_THUMB_10.png" alt="Accessory 10"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_11.png')"><img src="ACC_THUMB_11.png" alt="Accessory 11"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_12.png')"><img src="ACC_THUMB_12.png" alt="Accessory 12"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_13.png')"><img src="ACC_THUMB_13.png" alt="Accessory 13"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_14.png')"><img src="ACC_THUMB_14.png" alt="Accessory 14"></div>
-        <div class="roster-item" onclick="equipAccessory('ACC_15.png')"><img src="ACC_THUMB_15.png" alt="Accessory 15"></div>
-      </div>
-    </div>
+    <div id="accRosterPanel" class="roster-panel">
+      <button class="roster-back-btn" onclick="closeAccRoster()">lets go</button>
+      <h2 class="roster-title">Accessories </h2>
+      <div class="roster-scroll-container">
+        <div class="roster-item" onclick="equipAccessory('ACC_1.png')"><img src="ACC_THUMB_1.png" alt="Accessory 1"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_2.png')"><img src="ACC_THUMB_2.png" alt="Accessory 2"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_3.png')"><img src="ACC_THUMB_3.png" alt="Accessory 3"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_4.png')"><img src="ACC_THUMB_4.png" alt="Accessory 4"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_5.png')"><img src="ACC_THUMB_5.png" alt="Accessory 5"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_6.png')"><img src="ACC_THUMB_6.png" alt="Accessory 6"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_7.png')"><img src="ACC_THUMB_7.png" alt="Accessory 7"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_8.png')"><img src="ACC_THUMB_8.png" alt="Accessory 8"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_9.png')"><img src="ACC_THUMB_9.png" alt="Accessory 9"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_10.png')"><img src="ACC_THUMB_10.png" alt="Accessory 10"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_11.png')"><img src="ACC_THUMB_11.png" alt="Accessory 11"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_12.png')"><img src="ACC_THUMB_12.png" alt="Accessory 12"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_13.png')"><img src="ACC_THUMB_13.png" alt="Accessory 13"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_14.png')"><img src="ACC_THUMB_14.png" alt="Accessory 14"></div>
+        <div class="roster-item" onclick="equipAccessory('ACC_15.png')"><img src="ACC_THUMB_15.png" alt="Accessory 15"></div>
+      </div>
+    </div>
 
-  </div>
+  </div>
 
-  <svg style="display: none;">
-    <filter id="skinTintFilter" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" id="matrixValues"
-        values="1 0 0 0 0
-                0 1 0 0 0
-                0 0 1 0 0
-                0 0 0 1 0" />
-    </filter>
-  </svg>
+  <svg style="display: none;">
+    <filter id="skinTintFilter" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" id="matrixValues"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 1 0" />
+    </filter>
+  </svg>
 
+ <script>
+    const bodyImages = {
+      a: 'https://nicegirlslumber.neocities.org/bodyA.png',
+      b: 'https://nicegirlslumber.neocities.org/bodyB.png',
+      c: 'https://nicegirlslumber.neocities.org/bodyC.png'
+    };
+
+    const gameState = { activeBodyType: 'a' };
+
+    function selectInitialBody(type) {
+      const popup = document.getElementById('bodyPopup');
+      if (popup) {
+        popup.classList.add('hidden');
+      }
+      setBodyType(type);
+    }
+
+    function setBodyType(type) {
+      if (!bodyImages[type]) return;
+
+      gameState.activeBodyType = type;
+
+      const bodyEl = document.getElementById('bodyBase');
+      if (bodyEl) {
+        bodyEl.style.backgroundImage = `url('${bodyImages[type]}')`;
+      }
+
+      ['A', 'B', 'C'].forEach(letter => {
+        const btn = document.getElementById(`btnBody${letter}`);
+        if (btn) btn.classList.remove('active');
+      });
+
+      const activeBtn = document.getElementById(`btnBody${type.toUpperCase()}`);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    function toggleCustomBox() {
+      document.getElementById('customBox').classList.toggle('open');
+    }
+
+    function openFullCloset() {
+      document.getElementById('fullCloset').classList.add('open');
+    }
+
+    function closeFullCloset() {
+      document.getElementById('fullCloset').classList.remove('open');
+    }
+
+    function openShoeRack() {
+      document.getElementById('shoeRack').classList.add('open');
+    }
+
+    function closeShoeRack() {
+      document.getElementById('shoeRack').classList.remove('open');
+    }
+
+    function openHairModal() {
+      document.getElementById('hairSection').classList.add('open');
+    }
+
+    function closeHairModal() {
+      document.getElementById('hairSection').classList.remove('open');
+    }
+
+    function openHairRoster() {
+      document.getElementById('hairRosterPanel').classList.add('open');
+    }
+
+    function closeHairRoster() {
+      document.getElementById('hairRosterPanel').classList.remove('open');
+    }
+
+    function openAccRoster() {
+      document.getElementById('accRosterPanel').classList.add('open');
+    }
+
+    function closeAccRoster() {
+      document.getElementById('accRosterPanel').classList.remove('open');
+    }
+
+    function equipHair(hairUrl) {
+      alert("Equipped hair: " + hairUrl);
+    }
+
+    function equipAccessory(accUrl) {
+      alert("Equipped accessory: " + accUrl);
+    }
+
+    function updateSkinColor(hexColor) {
+      const r = parseInt(hexColor.slice(1, 3), 16) / 255;
+      const g = parseInt(hexColor.slice(3, 5), 16) / 255;
+      const b = parseInt(hexColor.slice(5, 7), 16) / 255;
+
+      const matrix = document.getElementById('matrixValues');
+      if (matrix) {
+        matrix.setAttribute('values', 
+          `${r} 0 0 0 0
+           0 ${g} 0 0 0
+           0 0 ${b} 0 0
+           0 0 0 1 0`
+        );
+      }
+    }
+
+    function equipEyes(imgUrl) {
+      document.getElementById('eyesLayer').style.backgroundImage = imgUrl ? `url('${imgUrl}')` : 'none';
+    }
+
+    function equipNose(imgUrl) {
+      document.getElementById('noseLayer').style.backgroundImage = imgUrl ? `url('${imgUrl}')` : 'none';
+    }
+
+    function equipLips(imgUrl) {
+      document.getElementById('lipsLayer').style.backgroundImage = imgUrl ? `url('${imgUrl}')` : 'none';
+    }
+
+    function equipPants(pantsPngUrl) {
+      document.getElementById('pantsLayer').style.backgroundImage = `url('${pantsPngUrl}')`;
+    }
+
+    function equipShirt(shirtPngUrl) {
+      document.getElementById('shirtLayer').style.backgroundImage = `url('${shirtPngUrl}')`;
+    }
+
+    function equipShoes(shoesPngUrl) {
+      document.getElementById('shoesLayer').style.backgroundImage = `url('${shoesPngUrl}')`;
+    }
+  </script>
 </body>
+</html>
