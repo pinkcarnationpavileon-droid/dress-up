@@ -546,6 +546,84 @@
       object-fit: contain;
       filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
     }
+
+    /* Hair & Accessories Section Slide-Up Curtain */
+    .hair-curtain {
+      position: absolute;
+      bottom: -100vh;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('https://nicegirlslumber.neocities.org/temphairandaccessory.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 -15px 35px rgba(0,0,0,0.5);
+      transition: bottom 0.7s cubic-bezier(0.77, 0, 0.175, 1);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    .hair-curtain.open { bottom: 0; }
+
+    .hair-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #f06292;
+      color: white;
+      border: 2px solid white;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-family: inherit;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+      z-index: 25;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .hair-close-btn:hover {
+      background: #ec407a;
+      transform: scale(1.05);
+    }
+
+    .hair-workspace {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      padding-top: 50px;
+    }
+
+    .hair-buttons-container {
+      display: flex;
+      gap: 30px;
+    }
+
+    .hair-png-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.2s;
+    }
+
+    .hair-png-btn img {
+      width: 150px;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+    }
+
+    .hair-png-btn:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 
@@ -728,6 +806,21 @@
       </div>
     </div>
 
+    <div id="hairSection" class="hair-curtain">
+      <button class="hair-close-btn" onclick="closeHairModal()">Back to Avatar ➔</button>
+
+      <div class="hair-workspace">
+        <div class="hair-buttons-container">
+          <button class="hair-png-btn" onclick="selectHairCategory()">
+            <img src="YOUR_HAIR_BUTTON_PNG.png" alt="Hair Button">
+          </button>
+          <button class="hair-png-btn" onclick="selectAccessoriesCategory()">
+            <img src="YOUR_ACC_BUTTON_PNG.png" alt="Accessories Button">
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <svg style="display: none;">
@@ -797,7 +890,19 @@
     }
 
     function openHairModal() {
-      alert("Hair selection panel can be hooked up here!");
+      document.getElementById('hairSection').classList.add('open');
+    }
+
+    function closeHairModal() {
+      document.getElementById('hairSection').classList.remove('open');
+    }
+
+    function selectHairCategory() {
+      alert("Hair selection items can be displayed here!");
+    }
+
+    function selectAccessoriesCategory() {
+      alert("Accessories selection items can be displayed here!");
     }
 
     function updateSkinColor(hexColor) {
